@@ -20,6 +20,10 @@ namespace Atlamillia
 			{
 				return m_tiles.at(y).at(x);
 			}
+			void SetTile(size_t x, size_t y, Tile* _til)
+			{
+				m_tiles.at(y).at(x) = _til;
+			}
 
 			void Resize(size_t _w, size_t _h)
 			{
@@ -27,6 +31,10 @@ namespace Atlamillia
 				for (size_t i = 0; i < m_tiles.size(); i++)
 				{
 					m_tiles.at(i).resize(_w);
+					for (size_t x = 0; x < m_tiles.at(i).size(); x++)
+					{
+						m_tiles.at(i).at(x) = new Tile();
+					}
 				}
 			}
 	};

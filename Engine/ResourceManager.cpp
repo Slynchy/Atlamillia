@@ -18,7 +18,7 @@ Atlamillia::Graphics::Texture* Atlamillia::ResourceManager::GetTexture(std::stri
 	// If this error happens, it just needs access to the renderer somehow
 	if (_rend == NULL)
 	{
-		printf("Could not load file (no renderer): %s\n", _name.c_str());
+		dprintf("[RManager] Could not load file (no renderer): %s\n", _name.c_str());
 		return NULL;
 	}
 	else
@@ -29,12 +29,13 @@ Atlamillia::Graphics::Texture* Atlamillia::ResourceManager::GetTexture(std::stri
 	// If temp == null, it's because it couldn't be loaded for whatever reason
 	if (temp->GetFilename() != "")
 	{
+		dprintf("[RManager] Loading texture: %s\n", _name.c_str());
 		loaded_textures.push_back(temp);
 		return temp;
 	}
 	else
 	{
-		printf("Could not load file: %s\n", _name.c_str());
+		dprintf("[RManager] Could not load file: %s\n", _name.c_str());
 		return NULL;
 	}
 };

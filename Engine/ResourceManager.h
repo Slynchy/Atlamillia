@@ -4,6 +4,12 @@
 #include "Graphics\Graphics.h"
 #include <vector>
 
+#ifdef _DEBUG
+	#define dprintf printf
+#else
+	#define dprintf __noop
+#endif
+
 namespace Atlamillia
 {
 	class ResourceManager

@@ -2,9 +2,13 @@
 
 #include "./Zone/Zone.h"
 #include <vector>
+#include "./Atlamillia/Engine/CSVLoader/CSVLoader.h"
+#include "../GameObject/Player/Player.h"
 
 namespace Atlamillia
 {
+	class Engine;
+
 	// Level == the whole map
 	// Zone == section of map
 	// Tile == tile of map
@@ -14,28 +18,37 @@ namespace Atlamillia
 			std::vector<std::vector<Atlamillia::Zone*>> m_zones;
 			std::vector<Atlamillia::GameObject*> m_scenegraph;
 			Atlamillia::Graphics::Renderer* m_renderer;
+			Atlamillia::Graphics::Texture* m_texture;
+			Atlamillia::Engine* m_engine;
+			std::vector<Atlamillia::Graphics::Texture*> m_levelTextures;
+			void SetTileValues(glm::ivec2 _zone, std::vector<std::vector<int>>& _in);
 
-			Level(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Graphics::Renderer* _rend = nullptr)
-			{
-				m_renderer = _rend;
-				m_zones.resize(_h);
-				for (size_t y = 0; y < m_zones.size(); y++)
-				{
-					m_zones.at(y).resize(_w);
-					for (size_t x = 0; x < m_zones.at(y).size(); x++)
-					{
-						m_zones.at(y).at(x) = new Zone();
-						m_zones.at(y).at(x)->Resize(_zW, _zH);
-					}
-				}
-			}
+			std::vector<Atlamillia::GameObject*> m_props;
+
+			Level(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Engine* _eng);
+			void Draw();
 		protected:
 		public:
 
-			void Draw()
-			{
+			Atlamillia::Player* m_player;
 
+			void Draw(glm::ivec2 offset);
+
+			std::vector<Atlamillia::GameObject*>* GetLevelProps()
+			{
+				return &m_props;
 			}
+
+			void UpdateTexture()
+			{
+				m_texture = new Atlamillia::Graphics::Texture(m_renderer, 64 * (GetSize().x * m_zones.front().front()->GetSize().x), 32 * (GetSize().y * m_zones.front().front()->GetSize().y), true);
+
+				m_renderer->SetRenderTarget(m_texture);
+				m_renderer->RenderActiveColour( 0, 0, 0, 0);
+				m_renderer->RenderClear();
+				this->Draw();
+				m_renderer->SetRenderTarget(NULL);
+			};
 
 			void DebugDraw(glm::ivec2 offset)
 			{
@@ -71,10 +84,8 @@ namespace Atlamillia
 				return m_zones.at(y).at(x);
 			}
 
-			static Level* CreateLevel(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Graphics::Renderer* _rend = nullptr)
-			{
-				return new Level(_w, _h, _zW, _zH, _rend);
-			}
+			static Level* CreateLevel(const char* _inputfile, Atlamillia::Engine* _eng);
+			static Level* CreateLevel(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Engine* _eng);
 
 			~Level()
 			{
