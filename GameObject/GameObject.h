@@ -5,6 +5,7 @@
 #include "../Engine/Graphics/Graphics.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 namespace Atlamillia
 {
@@ -70,18 +71,22 @@ namespace Atlamillia
 
 			void Translate(float _x, float _y, std::vector<GameObject*>* _objects)
 			{
+				_x = std::max(-0.05f, std::min(_x, 0.05f));
+				_y = std::max(-0.05f, std::min(_y, 0.05f));
+
 				bool collision = false;
-				glm::vec2 tempPos = Iso::isoTo2D(pos) + Iso::isoTo2D(glm::vec2(_x, _y));
+				glm::vec2 tempPos = pos + glm::vec2(_x, _y);
+				glm::ivec2 tempPosI = glm::ivec2(tempPos);
 				for (size_t i = 0; i < _objects->size(); i++)
 				{
 					if (
-						tempPos.x > _objects->at(i)->pos.x &&
-						tempPos.x < _objects->at(i)->pos.x + 1 
+						tempPosI.x == _objects->at(i)->pos.x ||
+						tempPosI.x == _objects->at(i)->pos.x - 1
 						)
 					{
 						if (
-							tempPos.y > _objects->at(i)->pos.y &&
-							tempPos.y < _objects->at(i)->pos.y + 1
+							tempPosI.y == _objects->at(i)->pos.y ||
+							tempPosI.y == _objects->at(i)->pos.y - 1
 							)
 						{
 							collision = true;
@@ -89,6 +94,8 @@ namespace Atlamillia
 						}
 					}
 				}
+
+
 				if(collision != true)
 					pos += glm::vec2(_x, _y);
 				m_direction = GetDirectionFromDelta(glm::vec2(_x, _y));
@@ -96,23 +103,38 @@ namespace Atlamillia
 
 			GameObject::DIRECTIONS GameObject::GetDirectionFromDelta(glm::vec2 _deltapos)
 			{
-				float angle = (atan2f(_deltapos.y, _deltapos.x));
-				//std::cout << "Angle: " << angle << "\n";
-				if (_deltapos.x >= 0.001f && _deltapos.y >= 0.001f) 
+
+				if (_deltapos.x > 0 && _deltapos.y > 0) 
 				{
 					return GameObject::DIRECTIONS::SOUTH;
 				}
-				else if (_deltapos.x >= 0.001f && _deltapos.y <= -0.001f) 
-				{
-					return GameObject::DIRECTIONS::EAST;
-				}
-				else if (_deltapos.x <= 0.001f && _deltapos.y >= 0.001f) 
+				else if (_deltapos.x < 0 && _deltapos.y > 0) 
 				{
 					return GameObject::DIRECTIONS::WEST;
 				}
-				else if (_deltapos.x <= 0.001f && _deltapos.y <= -0.001f) 
+				else if (_deltapos.x < 0 && _deltapos.y < 0) 
 				{
 					return GameObject::DIRECTIONS::NORTH;
+				}
+				else if (_deltapos.x > 0 && _deltapos.y < 0) 
+				{
+					return GameObject::DIRECTIONS::EAST;
+				}
+				else if (_deltapos.x == 0 && _deltapos.y > 0)
+				{
+					return GameObject::DIRECTIONS::SOUTH_WEST;
+				}
+				else if (_deltapos.x == 0 && _deltapos.y < 0)
+				{
+					return GameObject::DIRECTIONS::NORTH_EAST;
+				}
+				else if (_deltapos.x > 0 && _deltapos.y == 0)
+				{
+					return GameObject::DIRECTIONS::SOUTH_EAST;
+				}
+				else if (_deltapos.x < 0 && _deltapos.y == 0)
+				{
+					return GameObject::DIRECTIONS::NORTH_WEST;
 				}
 				return GameObject::DIRECTIONS::SOUTH;
 			}

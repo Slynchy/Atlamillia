@@ -39,16 +39,7 @@ namespace Atlamillia
 				return &m_props;
 			}
 
-			void UpdateTexture()
-			{
-				m_texture = new Atlamillia::Graphics::Texture(m_renderer, 64 * (GetSize().x * m_zones.front().front()->GetSize().x), 32 * (GetSize().y * m_zones.front().front()->GetSize().y), true);
-
-				m_renderer->SetRenderTarget(m_texture);
-				m_renderer->RenderActiveColour( 0, 0, 0, 0);
-				m_renderer->RenderClear();
-				this->Draw();
-				m_renderer->SetRenderTarget(NULL);
-			};
+			void UpdateTexture();
 
 			void DebugDraw(glm::ivec2 offset)
 			{

@@ -35,17 +35,18 @@ void Atlamillia::Level::Draw(glm::ivec2 _offset)
 	this->m_renderer->RenderCopy(m_texture, NULL, &temp);
 
 	bool playerdrawn = false;
+	float playerZMagnitude = glm::length(m_player->pos); // magnitude of XY == Z
 	for (size_t i = 0; i < m_props.size(); i++)
 	{
-		glm::vec2 testicle = Iso::isoTo2D(m_player->pos);
-		float test = glm::length(testicle);
-		if (glm::length(m_props.at(i)->pos) > (test) && playerdrawn == false)
+		// If the Z of the object is greater than the player's Z, then draw the player before the object
+		if (glm::length(m_props.at(i)->pos) > (playerZMagnitude) && playerdrawn == false)
 		{
 			m_player->Draw(m_renderer, _offset);
 			playerdrawn = true;
 		}
 		m_props.at(i)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 	}
+	// If the player hasn't been drawn, draw them now; they are infront of all objects
 	if(playerdrawn == false)
 		m_player->Draw(m_renderer, _offset);
 }
@@ -64,25 +65,34 @@ void Atlamillia::Level::Draw()
 					{
 						glm::ivec2 temp = Atlamillia::Iso::twoDToIso(glm::vec2(zX, zY) + (glm::vec2(x, y) * (float)GetZone(x, y)->GetSize().y));
 						temp += glm::ivec2(m_texture->GetDimensions().x * 0.5f, 0);
-						//SDL_Rect tempRect = {
-						//	temp.x,
-						//	temp.y,
-						//	64,
-						//	32
-						//};
 
 						this->GetZone(x, y)->GetTile(zX, zY)->Draw(m_renderer, temp, true);
 					};
 				}
 			};
 		}
-
 	}
 	catch (const std::exception& e)
 	{
 		printf("[Level] Failed to draw to texture! %s", e.what());
 	}
 }
+
+void Atlamillia::Level::UpdateTexture()
+{
+	m_engine->GetResourceManager()->DeleteTexture(m_texture);
+	m_texture = new Atlamillia::Graphics::Texture(
+		m_renderer,
+		64 * (GetSize().x * m_zones.front().front()->GetSize().x),
+		32 * (GetSize().y * m_zones.front().front()->GetSize().y),
+		true);
+
+	m_renderer->SetRenderTarget(m_texture);
+	m_renderer->RenderActiveColour(0, 0, 0, 0);
+	m_renderer->RenderClear();
+	this->Draw();
+	m_renderer->SetRenderTarget(NULL);
+};
 
 void Atlamillia::Level::SetTileValues(glm::ivec2 _zone, std::vector<std::vector<int>>& _in)
 {

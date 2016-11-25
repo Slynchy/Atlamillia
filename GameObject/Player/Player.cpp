@@ -32,7 +32,7 @@ void Atlamillia::Player::Draw(Atlamillia::Graphics::Renderer* _rend, glm::vec2 _
 	dstRect.w = int(srcRect.w * 0.66f);
 	dstRect.h = int(srcRect.h * 0.66f);
 
-	glm::vec2 temp = pos;
+	glm::vec2 temp = Iso::twoDToIso(pos);
 	temp += _offset;
 	dstRect.x = int((temp.x) - 8);
 	dstRect.y = int((temp.y) - (dstRect.h - 24));

@@ -20,6 +20,8 @@ namespace Atlamillia
 		public:
 			Graphics::Texture* GetTexture(std::string _name, Atlamillia::Graphics::Renderer* _rend = NULL);
 
+			void DeleteTexture(Graphics::Texture* _tex);
+
 			~ResourceManager()
 			{
 				for (size_t i = 0; i < loaded_textures.size(); i++)

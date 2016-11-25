@@ -1,5 +1,20 @@
 #include "ResourceManager.h"
 
+void Atlamillia::ResourceManager::DeleteTexture(Graphics::Texture* _tex)
+{
+	if (_tex == nullptr) return;
+	for (size_t i = 0; i < loaded_textures.size(); i++)
+	{
+		if (loaded_textures.at(i) == _tex)
+		{
+			delete loaded_textures.at(i);
+			loaded_textures.erase(loaded_textures.begin() + i);
+			break;
+		}
+	}
+	return;
+}
+
 Atlamillia::Graphics::Texture* Atlamillia::ResourceManager::GetTexture(std::string _name, Atlamillia::Graphics::Renderer* _rend)
 {
 	for (size_t i = 0; i < loaded_textures.size(); i++)
