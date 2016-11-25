@@ -121,6 +121,12 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 	filename = "./levels/" + std::string(_inputfile) + "_propsindex.txt";
 	std::vector<std::vector<std::string>> propmap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
 
+	// Load the wallmap to int table
+	filename = "./levels/" + std::string(_inputfile) + "_wall.csv";
+	std::vector<std::vector<std::vector<int>>> wallmap_int = Atlamillia::CSVLoader::Load3DCSVFile_int(filename.c_str());
+	filename = "./levels/" + std::string(_inputfile) + "_wallindex.txt";
+	std::vector<std::vector<std::string>> wallmap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
+
 	// Create the level based on the passed size
 	Level* output = new Level(1, 1, floormap_int.at(0).size(), floormap_int.size(), _eng);
 	output->SetTileValues(glm::ivec2(0, 0), floormap_int);
@@ -149,11 +155,30 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 							if (propmap_int.at(zY).at(zX) != 0)
 							{
 								GameObject* temp = new GameObject();
-								temp->SetTexture(output->m_engine->GetResourceManager()->GetTexture(propmap_index.at(0).at(propmap_int.at(zY).at(zX)-1), output->m_engine->GetRenderer()));
-								//output->GetZone(x, y)->GetTile(zX, zY)->AddObject(temp);
+								temp->SetTexture(output->m_engine->GetResourceManager()->GetTexture(propmap_index.front().at(propmap_int.at(zY).at(zX)-1), output->m_engine->GetRenderer()));
 								temp->pos = (glm::vec2(zX, zY));
 								output->m_props.push_back(temp);
 							};
+
+							if (wallmap_int.at(zY).at(zX).size() > 1)
+							{
+								for (size_t wall = 0; wall < wallmap_int.at(zY).at(zX).size(); wall++)
+								{
+									if (wallmap_int.at(zY).at(zX).at(wall) == 0) continue;
+									GameObject* temp = new GameObject();
+									temp->SetTexture(output->m_engine->GetResourceManager()->GetTexture(wallmap_index.front().at(wallmap_int.at(zY).at(zX).at(wall) - 1), output->m_engine->GetRenderer()));
+									temp->pos = (glm::vec2(zX, zY));
+									output->m_props.push_back(temp);
+								}
+							}
+							else if(wallmap_int.at(zY).at(zX).size() == 1)
+							{
+								if (wallmap_int.at(zY).at(zX).front() == 0) continue;
+								GameObject* temp = new GameObject();
+								temp->SetTexture(output->m_engine->GetResourceManager()->GetTexture(wallmap_index.front().at(wallmap_int.at(zY).at(zX).front() - 1), output->m_engine->GetRenderer()));
+								temp->pos = (glm::vec2(zX, zY));
+								output->m_props.push_back(temp);
+							}
 						};
 					};
 				};
