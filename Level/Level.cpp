@@ -109,30 +109,31 @@ void Atlamillia::Level::SetTileValues(glm::ivec2 _zone, std::vector<std::vector<
 
 Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlamillia::Engine* _eng)
 {
-	// Load the floormap to int table
-	std::string filename = "./levels/" + std::string(_inputfile) + "_floor.csv";
-	std::vector<std::vector<int>> floormap_int = Atlamillia::CSVLoader::LoadCSVFile_int(filename.c_str());
-	filename = "./levels/" + std::string(_inputfile) + "_floorindex.txt";
-	std::vector<std::vector<std::string>> floormap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
-
-	// Load the floormap to int table
-	filename = "./levels/" + std::string(_inputfile) + "_props.csv";
-	std::vector<std::vector<int>> propmap_int = Atlamillia::CSVLoader::LoadCSVFile_int(filename.c_str());
-	filename = "./levels/" + std::string(_inputfile) + "_propsindex.txt";
-	std::vector<std::vector<std::string>> propmap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
-
-	// Load the wallmap to int table
-	filename = "./levels/" + std::string(_inputfile) + "_wall.csv";
-	std::vector<std::vector<std::vector<int>>> wallmap_int = Atlamillia::CSVLoader::Load3DCSVFile_int(filename.c_str());
-	filename = "./levels/" + std::string(_inputfile) + "_wallindex.txt";
-	std::vector<std::vector<std::string>> wallmap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
-
-	// Create the level based on the passed size
-	Level* output = new Level(1, 1, floormap_int.at(0).size(), floormap_int.size(), _eng);
-	output->SetTileValues(glm::ivec2(0, 0), floormap_int);
-
+	Level* output = nullptr;
 	try
 	{
+		// Load the floormap to int table
+		std::string filename = "./levels/" + std::string(_inputfile) + "_floor.csv";
+		std::vector<std::vector<int>> floormap_int = Atlamillia::CSVLoader::LoadCSVFile_int(filename.c_str());
+		filename = "./levels/" + std::string(_inputfile) + "_floorindex.txt";
+		std::vector<std::vector<std::string>> floormap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
+
+		// Load the floormap to int table
+		filename = "./levels/" + std::string(_inputfile) + "_props.csv";
+		std::vector<std::vector<int>> propmap_int = Atlamillia::CSVLoader::LoadCSVFile_int(filename.c_str());
+		filename = "./levels/" + std::string(_inputfile) + "_propsindex.txt";
+		std::vector<std::vector<std::string>> propmap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
+
+		// Load the wallmap to int table
+		filename = "./levels/" + std::string(_inputfile) + "_wall.csv";
+		std::vector<std::vector<std::vector<int>>> wallmap_int = Atlamillia::CSVLoader::Load3DCSVFile_int(filename.c_str());
+		filename = "./levels/" + std::string(_inputfile) + "_wallindex.txt";
+		std::vector<std::vector<std::string>> wallmap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
+
+		// Create the level based on the passed size
+		output = new Level(1, 1, floormap_int.at(0).size(), floormap_int.size(), _eng);
+		output->SetTileValues(glm::ivec2(0, 0), floormap_int);
+
 		for (size_t y = 0; y < (size_t)output->GetSize().y; y++)
 		{
 			for (size_t x = 0; x < (size_t)output->GetSize().x; x++)
@@ -187,12 +188,14 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 	}
 	catch (const std::exception& e)
 	{
-		printf("[Level] Failed to create level! %s", e.what());
+		printf("%s\n[Level] Failed to create level!", e.what());
 	}
 
-	output->UpdateTexture();
-
-	std::sort(output->m_props.begin(), output->m_props.end(), less_than_key());
+	if (output != nullptr)
+	{
+		output->UpdateTexture();
+		std::sort(output->m_props.begin(), output->m_props.end(), less_than_key());
+	}
 
 	return output;
 	//out

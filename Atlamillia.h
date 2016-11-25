@@ -32,7 +32,12 @@ namespace Atlamillia
 			inline SDL_Event* GetEvent() { return m_events; };
 			inline Atlamillia::Viewport* GetViewport() { return m_viewport; };
 			inline Atlamillia::Level* GetActiveLevel() { return m_activeLevel; };
-			inline void SetActiveLevel(Atlamillia::Level* _lev) { m_activeLevel = _lev; };
+			inline bool SetActiveLevel(Atlamillia::Level* _lev) 
+			{ 
+				if (_lev == nullptr) return false; 
+				m_activeLevel = _lev; 
+				return true;
+			};
 
 			Engine(const char *title, int x, int y, int w, int h, Uint32 flags)
 			{

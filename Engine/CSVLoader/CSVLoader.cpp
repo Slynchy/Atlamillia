@@ -123,6 +123,8 @@ std::vector<std::vector<std::vector<int>>> Atlamillia::CSVLoader::Load3DCSVFile_
 					SplitString(tempArr.at(i), parentStrArr, '|', true);
 					for (size_t y = 0; y < parentStrArr.size(); y++)
 					{
+						if (parentStrArr.at(y).size() == 0)
+							throw std::exception("[CSVLoader] 3D CSV array value empty!");
 						std::stringstream convert(parentStrArr.at(y));
 						int temp;
 						convert >> temp;
