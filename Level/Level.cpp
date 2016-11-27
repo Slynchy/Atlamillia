@@ -131,13 +131,13 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 		std::vector<std::vector<std::string>> wallmap_index = Atlamillia::CSVLoader::LoadCSVFile_str(filename.c_str());
 
 		// Create the level based on the passed size
-		output = new Level(1, 1, floormap_int.at(0).size(), floormap_int.size(), _eng);
-		output->SetTileValues(glm::ivec2(0, 0), floormap_int);
+		output = new Level(1, 1, floormap_int.front().size(), floormap_int.size(), _eng);
 
 		for (size_t y = 0; y < (size_t)output->GetSize().y; y++)
 		{
 			for (size_t x = 0; x < (size_t)output->GetSize().x; x++)
 			{
+				output->SetTileValues(glm::ivec2(x, y), floormap_int);
 				for (size_t zY = 0; zY < floormap_int.size(); zY++)
 				{
 					for (size_t zX = 0; zX < floormap_int.at(zY).size(); zX++)
