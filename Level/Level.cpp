@@ -195,6 +195,28 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 	{
 		output->UpdateTexture();
 		std::sort(output->m_props.begin(), output->m_props.end(), less_than_key());
+
+		for (size_t zY = 0; zY < output->GetSize().y; zY++)
+		{
+			for (size_t zX = 0; zX < output->GetSize().x; zX++)
+			{
+				for (size_t y = 0; y < output->GetZone(zX, zY)->GetSize().y; y++)
+				{
+					output->GetZone(zX, zY)->m_nodemap.push_back(std::vector<NODE*>());
+					for (size_t x = 0; x < output->GetZone(zX, zY)->GetSize().x; x++)
+					{
+						NODE* tempnode = new NODE();
+						tempnode->pos = glm::ivec2(x, y);
+						output->GetZone(zX, zY)->m_nodemap.at(y).push_back(tempnode);
+					}
+				}
+				for (size_t i = 0; i < output->m_props.size(); i++)
+				{
+					output->GetZone(zX, zY)->m_nodemap.at((int)output->m_props.at(i)->pos.y).at((int)output->m_props.at(i)->pos.x)->isObstacle = true;
+				}
+			}
+		}
+
 	}
 
 	return output;

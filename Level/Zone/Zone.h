@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./Tile/Tile.h"
+#include "../../../ModularPathFinding/node.h"
 
 namespace Atlamillia
 {
@@ -10,6 +11,7 @@ namespace Atlamillia
 			std::vector<std::vector<Atlamillia::Tile*>> m_tiles;
 		protected:
 		public:
+			std::vector<std::vector<NODE*>> m_nodemap;
 
 			glm::ivec2 GetSize()
 			{

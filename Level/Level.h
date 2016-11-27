@@ -4,6 +4,7 @@
 #include <vector>
 #include "./Atlamillia/Engine/CSVLoader/CSVLoader.h"
 #include "../GameObject/Player/Player.h"
+#include "../../ModularPathFinding/node.h"
 
 namespace Atlamillia
 {

@@ -39,6 +39,18 @@ namespace Atlamillia
 				return true;
 			};
 
+			static glm::vec2 interpolate(const glm::vec2 &start, const glm::vec2 &end, float alpha)
+			{
+				alpha *= Atlamillia::Graphics::Renderer::DT;
+				return (start + alpha*(end - start));
+			}
+
+			static float interpolate(const float &start, const float &end, float alpha)
+			{
+				alpha *= Atlamillia::Graphics::Renderer::DT;
+				return (start + alpha*(end - start));
+			}
+
 			Engine(const char *title, int x, int y, int w, int h, Uint32 flags)
 			{
 				SDL_Init(SDL_INIT_EVERYTHING);
