@@ -43,7 +43,7 @@ namespace Atlamillia
 					{
 						temp.y -= speed;
 					}
-					this->parent_manager->parent->Translate(temp.x, temp.y);
+					this->parent_manager->parent->Translate(temp);
 				}
 
 			public:

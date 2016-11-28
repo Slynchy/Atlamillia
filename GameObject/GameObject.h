@@ -69,6 +69,12 @@ namespace Atlamillia
 				m_direction = GetDirectionFromDelta(glm::vec2(_x, _y));
 			}
 
+			void Translate(glm::vec2 _trs)
+			{
+				pos += _trs;
+				m_direction = GetDirectionFromDelta(_trs);
+			}
+
 			void Translate(float _x, float _y, std::vector<GameObject*>* _objects)
 			{
 				_x = std::max(-0.05f, std::min(_x, 0.05f));
