@@ -13,7 +13,7 @@ namespace Atlamillia
 			Atlamillia::StateManager* brain;
 		public:
 
-			Atlamillia::StateManager* GetStateManager()
+			virtual Atlamillia::StateManager* GetStateManager()
 			{
 				return brain;
 			}

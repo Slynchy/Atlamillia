@@ -9,29 +9,8 @@ using namespace Atlamillia;
 
 void RegularZed::Update()
 {
-	if (this->brain->GetActiveState() != nullptr) this->brain->GetActiveState()->Update();
+	if (this->brain != nullptr) this->brain->Update();
 	return;
-
-	// If we're at the end of the path, return
-	if ((brain->GetPathPos() + 1) >= brain->GetPath()->size()) return;
-	glm::vec2 temp(0, 0);
-	if (pos.x < (float)brain->GetPath()->at(brain->GetPathPos() + 1).pos.x)
-	{
-		temp.x += m_speed;
-	}
-	else
-	{
-		temp.x -= m_speed;
-	}
-	if (pos.y < (float)brain->GetPath()->at(brain->GetPathPos() + 1).pos.y)
-	{
-		temp.y += m_speed;
-	}
-	else
-	{
-		temp.y -= m_speed;
-	}
-	this->Translate(temp.x, temp.y);
 }
 
 void RegularZed::Draw(Atlamillia::Graphics::Renderer* rend, glm::vec2 offset)

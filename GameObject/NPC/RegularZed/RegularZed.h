@@ -12,6 +12,8 @@ namespace Atlamillia
 		protected:
 		public:
 
+			float GetSpeed() { return m_speed; };
+
 			void Update();
 
 			void Draw(Atlamillia::Graphics::Renderer* rend, glm::vec2 offset);
