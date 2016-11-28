@@ -52,6 +52,7 @@ void StateManager::SwitchState(AIState* _state, bool _force)
 
 void StateManager::Update()
 {
+	UpdatePathPos();
 	if (m_active_state != nullptr) m_active_state->Update();
 }
 
@@ -122,8 +123,15 @@ StateManager::~StateManager()
 	}
 };
 
-size_t StateManager::GetPathPos()
+void StateManager::UpdatePathPos()
 {
+	if (path_algo == nullptr) return;
+	if (path_algo->path.size() == 0)
+	{
+		curr_path_pos = 0;
+		return;
+	}
+
 	float closest = FLT_MAX;
 	NODE* current = nullptr;
 	size_t current_pos = 0;
@@ -138,18 +146,6 @@ size_t StateManager::GetPathPos()
 		}
 		position++;
 	}
-	position = current_pos;
-	return position;
 
-	//if (path_algo != nullptr)
-	//{
-	//	size_t result = 0;
-	//	while (result < path_algo->path.size())
-	//	{
-	//		if (parent->pos == glm::vec2(path_algo->path.at(result).pos))
-	//			return result;
-	//		result++;
-	//	}
-	//};
-	//return SIZE_MAX;
+	curr_path_pos = current_pos;
 }

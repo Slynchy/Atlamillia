@@ -21,6 +21,9 @@ namespace Atlamillia
 
 			/// The algorithm in use for pathfinding
 			PathAlgorithm* path_algo;
+
+			/// Current path position
+			size_t curr_path_pos;
 		private:
 		public:
 			/// Enumerator of all eligible algorithms
@@ -80,8 +83,10 @@ namespace Atlamillia
 			/// Getter for the actual path
 			std::vector<NODE>* GetPath();
 
-			/// Getter for the current position in the active path
-			size_t GetPathPos();
+			size_t GetPathPos() { return curr_path_pos; };
+
+			/// Updates the current position in the active path
+			void UpdatePathPos();
 
 			StateManager(NPC* _parent);
 
