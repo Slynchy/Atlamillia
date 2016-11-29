@@ -49,8 +49,29 @@ namespace Atlamillia
 			public:
 				void Update()
 				{
-					// If we're at the end of the path, return
-					if ((this->parent_manager->GetPathPos() + 1) >= this->parent_manager->GetPath()->size()) return;
+					if (this->parent_manager->parent->parent_level == nullptr || *this->parent_manager->parent->parent_level == nullptr)
+					{
+						dprintf("[RegularZed_States] Zombie doesn't have valid level pointer for pathing!\n");
+					}
+
+					// If we're at the end of the path, generate a new one at a random place
+					if ((this->parent_manager->GetPathPos() + 1) >= this->parent_manager->GetPath()->size())
+					{
+						this->parent_manager->GetPathAlgo()->path.clear();
+						while (this->parent_manager->GetPathAlgo()->path.size() == 0)
+						{
+							this->parent_manager->DoPath(
+								glm::ivec2(this->parent_manager->parent->pos.x, this->parent_manager->parent->pos.y),
+								glm::ivec2(
+									rand()%(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->GetSize().x,
+									rand()%(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->GetSize().y
+								),
+								(*this->parent_manager->parent->parent_level)->GetZone(0,0)->m_nodemap,
+								false
+							);
+						}
+					};
+					this->parent_manager->UpdatePathPos();
 					MoveTowards(this->parent_manager->GetPath()->at(this->parent_manager->GetPathPos() + 1).pos);
 				}
 
