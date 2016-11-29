@@ -10,6 +10,8 @@
 namespace Atlamillia
 {
 
+	class Level;
+
 	class GameObject
 	{
 		public:
@@ -32,6 +34,7 @@ namespace Atlamillia
 			SDL_Rect dstRect;
 		public:
 
+			Level** parent_level;
 			std::string Tag = "GameObject";
 			glm::vec2 pos;
 
