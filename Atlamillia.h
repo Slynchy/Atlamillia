@@ -38,6 +38,10 @@ namespace Atlamillia
 				m_activeLevel = _lev; 
 				return true;
 			};
+			inline Atlamillia::Level** GetActiveLevelPtr()
+			{
+				return &m_activeLevel;
+			}
 
 			static glm::vec2 interpolate(const glm::vec2 &start, const glm::vec2 &end, float alpha)
 			{
