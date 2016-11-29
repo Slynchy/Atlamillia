@@ -18,9 +18,19 @@ namespace Atlamillia
 
 			void Draw(Atlamillia::Graphics::Renderer* rend, glm::vec2 offset);
 
-			RegularZed(glm::ivec2 _startpos)
+			RegularZed(glm::ivec2 _startpos, Level** _parentlevel)
 			{
 				pos = _startpos;
+				parent_level = _parentlevel;
+			}
+
+			~RegularZed()
+			{
+				if (brain != nullptr)
+				{
+					delete brain;
+					brain = nullptr;
+				};
 			}
 	};
 
