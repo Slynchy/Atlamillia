@@ -65,5 +65,10 @@ namespace Atlamillia
 				SDL_Rect temp = { _pos.x, _pos.y, m_floortexture->GetDimensions().x, m_floortexture->GetDimensions().y };
 				_rend->RenderCopy(m_floortexture, NULL, &temp);
 			}
+
+			~Tile()
+			{
+				m_objects.clear();
+			}
 	};
 }

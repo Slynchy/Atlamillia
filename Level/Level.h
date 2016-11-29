@@ -79,9 +79,6 @@ namespace Atlamillia
 			static Level* CreateLevel(const char* _inputfile, Atlamillia::Engine* _eng);
 			static Level* CreateLevel(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Engine* _eng);
 
-			~Level()
-			{
-
-			}
+			~Level();
 	};
 }

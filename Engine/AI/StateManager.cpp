@@ -19,16 +19,16 @@ void Atlamillia::StateManager::QueueState(AIState* _state)
 	this->m_active_state = _state;
 }
 
-std::queue<Atlamillia::AIState*>* StateManager::GetQueue()
+std::stack<Atlamillia::AIState*>* StateManager::GetQueue()
 {
 	return &m_state_queue;
 }
 
-void StateManager::SwitchState(AIState* _state, bool _force)
+void StateManager::AddState(AIState* _state, bool _force)
 {
 	if (_state != nullptr)
 	{
-		if (_force)
+		/*if (_force)
 		{
 			for (size_t i = 0; i < m_state_queue.size(); i++)
 			{
@@ -42,12 +42,23 @@ void StateManager::SwitchState(AIState* _state, bool _force)
 					m_state_queue.pop();
 				}
 			}
-		};
+		};*/
+		m_state_queue.push(_state);
 
 		m_active_state = _state;
 		_state->SetManager(this);
 
 	};
+}
+
+void Atlamillia::StateManager::PopState()
+{
+	delete m_state_queue.top();
+	m_state_queue.pop();
+	if(m_state_queue.size() == 0 || m_state_queue.top() == nullptr)
+		m_active_state = nullptr;
+	else
+		m_active_state = m_state_queue.top();
 }
 
 void StateManager::Update()
@@ -113,12 +124,10 @@ StateManager::~StateManager()
 {
 	if (path_algo != nullptr)
 		delete path_algo;
-	if (m_active_state != nullptr)
-		delete m_active_state;
+	m_active_state = nullptr;
 	while (m_state_queue.size() > 0)
 	{
-		if (m_state_queue.front() != nullptr)
-			delete m_state_queue.front();
+		delete m_state_queue.top();
 		m_state_queue.pop();
 	}
 };

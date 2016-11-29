@@ -39,5 +39,17 @@ namespace Atlamillia
 					}
 				}
 			}
+
+			~Zone()
+			{
+				for (size_t y = 0; y < m_tiles.size(); y++)
+				{
+					for (size_t x = 0; x < m_tiles.at(y).size(); x++)
+					{
+						delete m_tiles.at(y).at(x);
+						delete m_nodemap.at(y).at(x);
+					}
+				}
+			}
 	};
 }

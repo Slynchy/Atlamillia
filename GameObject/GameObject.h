@@ -157,6 +157,10 @@ namespace Atlamillia
 			{
 				srcRect = { 0,0,0,0 };
 				dstRect = { 0,0,0,0 };
+				Tag = "";
+				parent_level = nullptr;
+				m_activeTexture = nullptr;
+				pos = glm::vec2(0, 0);
 			}
 	};
 

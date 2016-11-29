@@ -86,6 +86,7 @@ void Atlamillia::Level::UpdateTexture()
 		64 * (GetSize().x * m_zones.front().front()->GetSize().x),
 		32 * (GetSize().y * m_zones.front().front()->GetSize().y),
 		true);
+	m_engine->GetResourceManager()->AddTexture(m_texture);
 
 	m_renderer->SetRenderTarget(m_texture);
 	m_renderer->RenderActiveColour(0, 0, 0, 0);
@@ -196,18 +197,17 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 		output->UpdateTexture();
 		std::sort(output->m_props.begin(), output->m_props.end(), less_than_key());
 
-		for (size_t zY = 0; zY < output->GetSize().y; zY++)
+		for (int zY = 0; zY < output->GetSize().y; zY++)
 		{
-			for (size_t zX = 0; zX < output->GetSize().x; zX++)
+			for (int zX = 0; zX < output->GetSize().x; zX++)
 			{
-				for (size_t y = 0; y < output->GetZone(zX, zY)->GetSize().y; y++)
+				for (int y = 0; y < output->GetZone(zX, zY)->GetSize().y; y++)
 				{
 					output->GetZone(zX, zY)->m_nodemap.push_back(std::vector<NODE*>());
-					for (size_t x = 0; x < output->GetZone(zX, zY)->GetSize().x; x++)
+					for (int x = 0; x < output->GetZone(zX, zY)->GetSize().x; x++)
 					{
-						NODE* tempnode = new NODE();
-						tempnode->pos = glm::ivec2(x, y);
-						output->GetZone(zX, zY)->m_nodemap.at(y).push_back(tempnode);
+						output->GetZone(zX, zY)->m_nodemap.at(y).push_back(new NODE());
+						output->GetZone(zX, zY)->m_nodemap.at(y).back()->pos = glm::ivec2(x, y);
 					}
 				}
 				for (size_t i = 0; i < output->m_props.size(); i++)
@@ -226,4 +226,20 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 Atlamillia::Level* Atlamillia::Level::CreateLevel(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Engine* _eng)
 {
 	return new Level(_w, _h, _zW, _zH, _eng);
+}
+
+Atlamillia::Level::~Level()
+{
+	for (size_t y = 0; y < m_zones.size(); y++)
+	{
+		for (size_t x = 0; x < m_zones.at(y).size(); x++)
+		{
+			delete m_zones.at(y).at(x);
+		}
+	}
+	for (size_t i = 0; i < m_props.size(); i++)
+	{
+		delete m_props.at(i);
+	}
+	m_engine->GetResourceManager()->DeleteTexture(m_texture);
 }

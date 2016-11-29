@@ -17,7 +17,7 @@ namespace Atlamillia
 			AIState* m_active_state;
 
 			/// The queue of states to execute
-			std::queue<AIState*> m_state_queue;
+			std::stack<AIState*> m_state_queue;
 
 			/// The algorithm in use for pathfinding
 			PathAlgorithm* path_algo;
@@ -47,7 +47,7 @@ namespace Atlamillia
 			ALGORITHMS defaultPathfinder;
 
 			/// Getter to the queue
-			std::queue<AIState*>* GetQueue();
+			std::stack<AIState*>* GetQueue();
 
 			/// Adds a state to the queue
 			/// \param _state AIState to queue to
@@ -66,9 +66,13 @@ namespace Atlamillia
 				return m_active_state;
 			}
 
-			/// Switches state to the specified one
+			/// Switches state to the specified one and adds to stack
 			/// \param _state AIState to switch to
-			void SwitchState(AIState* _state, bool _force = false);
+			/// \param _force Should it occur immediately?
+			void AddState(AIState* _state, bool _force = false);
+
+			/// Pops the top state from stack
+			void PopState();
 
 			/// Getter for the path algo
 			inline PathAlgorithm* GetPathAlgo() { return path_algo; }

@@ -68,12 +68,14 @@ namespace Atlamillia
 
 			~Engine()
 			{
-				delete m_rmanager;
-				delete m_ctx;
-				delete m_renderer;
+				if (m_activeLevel != nullptr)
+					delete m_activeLevel;
 				delete m_events;
 				delete m_inputmanager;
 				delete m_viewport;
+				delete m_rmanager;
+				delete m_ctx;
+				delete m_renderer;
 				SDL_Quit();
 			}
 	};

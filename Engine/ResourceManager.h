@@ -22,6 +22,11 @@ namespace Atlamillia
 
 			void DeleteTexture(Graphics::Texture* _tex);
 
+			void AddTexture(Graphics::Texture* _tex)
+			{
+				loaded_textures.push_back(_tex);
+			};
+			
 			~ResourceManager()
 			{
 				for (size_t i = 0; i < loaded_textures.size(); i++)

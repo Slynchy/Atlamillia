@@ -22,6 +22,12 @@ namespace Atlamillia
 			{
 				brain = new StateManager(this);
 			}
+
+			~NPC()
+			{
+				if(brain != nullptr)
+					delete brain;
+			}
 	};
 
 }
