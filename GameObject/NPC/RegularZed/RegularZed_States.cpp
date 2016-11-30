@@ -21,7 +21,7 @@ void Atlamillia::RegularZed_States::Idle::Update()
 
 void Atlamillia::RegularZed_States::Patrol::MoveTowards(glm::vec2 _dst)
 {
-	float speed = dynamic_cast<RegularZed*>(this->parent_manager->parent)->GetSpeed();
+	float speed = static_cast<RegularZed*>(this->parent_manager->parent)->GetSpeed();
 	glm::vec2 temp(0, 0);
 	if (this->parent_manager->parent->pos.x < _dst.x)
 	{

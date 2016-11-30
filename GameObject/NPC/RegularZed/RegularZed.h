@@ -22,6 +22,7 @@ namespace Atlamillia
 			{
 				pos = _startpos;
 				parent_level = _parentlevel;
+				Tag = "RegularZombie";
 			}
 
 			~RegularZed()

@@ -16,8 +16,8 @@ void RegularZed::Update()
 void RegularZed::Draw(Atlamillia::Graphics::Renderer* rend, glm::vec2 offset)
 {
 	glm::vec2 temp = this->pos;
-	temp.x = std::round(temp.x);
-	temp.y = std::round(temp.y);
+	//temp.x = std::round(temp.x);
+	//temp.y = std::round(temp.y);
 	temp = Atlamillia::Iso::twoDToIso(temp);
 	temp += offset;
 	//temp -= glm::vec2(8, 8);
