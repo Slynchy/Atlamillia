@@ -15,6 +15,7 @@ namespace Atlamillia
 	class GameObject
 	{
 		public:
+			std::string Tag = "GameObject";
 			enum DIRECTIONS
 			{
 				NORTH,
@@ -26,6 +27,8 @@ namespace Atlamillia
 				WEST,
 				NORTH_WEST // a
 			};
+
+			static std::vector<GameObject*> SceneGraph;
 		private:
 		protected:
 			DIRECTIONS m_direction;
@@ -35,7 +38,6 @@ namespace Atlamillia
 		public:
 
 			Level** parent_level;
-			std::string Tag = "GameObject";
 			glm::vec2 pos;
 
 			void SetTexture(Atlamillia::Graphics::Texture* _tex)
@@ -152,6 +154,7 @@ namespace Atlamillia
 			{
 				srcRect = { 0,0,0,0 };
 				dstRect = { 0,0,0,0 };
+				SceneGraph.push_back(this);
 			}
 			~GameObject()
 			{
@@ -161,6 +164,15 @@ namespace Atlamillia
 				parent_level = nullptr;
 				m_activeTexture = nullptr;
 				pos = glm::vec2(0, 0);
+
+				for (size_t i = 0; i < SceneGraph.size(); i++)
+				{
+					if (SceneGraph.at(i) == this)
+					{
+						SceneGraph.erase(SceneGraph.begin() + i);
+						break;
+					};
+				}
 			}
 	};
 
