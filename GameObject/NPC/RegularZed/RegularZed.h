@@ -9,6 +9,7 @@ namespace Atlamillia
 	{
 		private:
 			const float m_speed = 0.03f;
+			const unsigned int m_wanderDistance = 10; // how far the zombie will path to
 		protected:
 		public:
 
@@ -17,6 +18,8 @@ namespace Atlamillia
 			void Update();
 
 			void Draw(Atlamillia::Graphics::Renderer* rend, glm::vec2 offset);
+
+			unsigned int GetWanderDistance() { return m_wanderDistance; };
 
 			RegularZed(glm::ivec2 _startpos, Level** _parentlevel)
 			{

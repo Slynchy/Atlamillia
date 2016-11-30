@@ -17,12 +17,16 @@ namespace Atlamillia
 	{
 		class Idle : public AIState
 		{
+			private:
+				Uint32 timer = 0;
+				Uint32 timetowait = 0;
 			public:
 				void Update();
 
 				Idle(StateManager* _parent)
 				{
 					parent_manager = _parent;
+					timetowait = (rand() % 2000) + 1000; // 1 to 3 seconds
 				}
 		};
 

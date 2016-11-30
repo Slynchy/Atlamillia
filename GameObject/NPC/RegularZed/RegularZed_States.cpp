@@ -1,22 +1,46 @@
 #include "RegularZed_States.h"
 #include "../../../Level/Level.h"
+#include "../../../Engine/Graphics/Graphics.h"
 
 void Atlamillia::RegularZed_States::Idle::Update()
 {
-	this->parent_manager->GetPathAlgo()->path.clear();
-	this->parent_manager->DoPath(
-		glm::ivec2(this->parent_manager->parent->pos.x, this->parent_manager->parent->pos.y),
-		glm::ivec2(
-			rand() % (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->GetSize().x,
-			rand() % (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->GetSize().y
-		),
-		(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap,
-		false
-	);
-	if (this->parent_manager->GetPathAlgo()->path.size() != 0)
+	timer += Atlamillia::Graphics::Renderer::DT;
+
+	if (timer >= timetowait)
 	{
-		this->parent_manager->AddState(new Patrol(this->parent_manager));
-	}
+		this->parent_manager->GetPathAlgo()->path.clear();
+
+		int posX =
+			(
+				(
+					rand() %
+					static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2
+				) - static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance()
+			);
+		int posY = 
+			(
+				(
+					rand() %
+					static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2
+				) - static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance()
+			);
+
+		this->parent_manager->DoPath(
+			glm::ivec2(this->parent_manager->parent->pos.x, this->parent_manager->parent->pos.y),
+			glm::ivec2(
+				this->parent_manager->parent->pos.x + posX,
+				this->parent_manager->parent->pos.y + posY
+			),
+			(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap,
+			false
+		);
+
+		if (this->parent_manager->GetPathAlgo()->path.size() != 0)
+		{
+			this->parent_manager->AddState(new Patrol(this->parent_manager));
+		}
+		timer = 0;
+	};
 };
 
 void Atlamillia::RegularZed_States::Patrol::MoveTowards(glm::vec2 _dst)
