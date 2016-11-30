@@ -6,53 +6,53 @@ namespace Atlamillia
 
 	class AIState
 	{
-	protected:
-		/// Pointer to the statemanager responsible for this state
-		StateManager* parent_manager;
-	private:
-	public:
-		AIState* parent_state;
+		protected:
+			/// Pointer to the statemanager responsible for this state
+			StateManager* parent_manager;
 
-		/// Start function is called before the state is updated and only called once
-		virtual void Start()
-		{
+			AIState()
+			{
 
-		}
-		/// Stop function is called before the state is deleted and only called once
-		virtual void Stop()
-		{
+			}
+			AIState(StateManager* _parent)
+			{
 
-		}
-		/// Update function is called every frame
-		virtual void Update()
-		{
+			}
+		private:
+		public:
+			AIState* parent_state;
 
-		}
+			/// Start function is called before the state is updated and only called once
+			virtual void Start()
+			{
 
-		/// Getter for the statemanager
-		StateManager* GetManager()
-		{
-			return parent_manager;
-		}
+			}
+			/// Stop function is called before the state is deleted and only called once
+			virtual void Stop()
+			{
 
-		/// Setter for the statemanager
-		void SetManager(StateManager* _param)
-		{
-			parent_manager = _param;
-		}
+			}
+			/// Update function is called every frame
+			virtual void Update()
+			{
 
-		AIState()
-		{
+			}
 
-		}
-		AIState(StateManager* _parent)
-		{
+			/// Getter for the statemanager
+			StateManager* GetManager()
+			{
+				return parent_manager;
+			}
 
-		}
-		~AIState()
-		{
+			/// Setter for the statemanager
+			void SetManager(StateManager* _param)
+			{
+				parent_manager = _param;
+			}
+			~AIState()
+			{
 
-		}
+			}
 	};
 
 };
