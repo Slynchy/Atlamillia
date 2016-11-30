@@ -1,5 +1,44 @@
 #include "Player.h"
 #include "../../Engine/Isometry/Isometry.h"
+#include "../../Engine/InputManager.h"
+#include "../../Level/Level.h"
+
+void Atlamillia::Player::Update(InputManager* _iman)
+{
+	movement = glm::vec2(0, 0);
+	if(HandleInput(_iman))
+		Translate(movement.x, movement.y, (*this->parent_level)->GetLevelProps());
+}
+
+bool Atlamillia::Player::HandleInput(InputManager* _iman)
+{
+	bool input = false;
+	if (_iman->KeyDown(Atlamillia::InputManager::BUTTONS::UP))
+	{
+		movement.y += -0.05f * Atlamillia::Graphics::Renderer::DT;
+		movement.x += -0.05f * Atlamillia::Graphics::Renderer::DT;
+		input = true;
+	}
+	if (_iman->KeyDown(Atlamillia::InputManager::BUTTONS::LEFT))
+	{
+		movement.x += -0.05f * Atlamillia::Graphics::Renderer::DT;
+		movement.y += 0.05f * Atlamillia::Graphics::Renderer::DT;
+		input = true;
+	}
+	if (_iman->KeyDown(Atlamillia::InputManager::BUTTONS::DOWN))
+	{
+		movement.y += 0.05f * Atlamillia::Graphics::Renderer::DT;
+		movement.x += 0.05f * Atlamillia::Graphics::Renderer::DT;
+		input = true;
+	}
+	if (_iman->KeyDown(Atlamillia::InputManager::BUTTONS::RIGHT))
+	{
+		movement.x += 0.05f * Atlamillia::Graphics::Renderer::DT;
+		movement.y += -0.05f * Atlamillia::Graphics::Renderer::DT;
+		input = true;
+	}
+	return input;
+}
 
 void Atlamillia::Player::Draw(Atlamillia::Graphics::Renderer* _rend, glm::vec2 _viewportPos, glm::vec2 _viewportSize)
 {
