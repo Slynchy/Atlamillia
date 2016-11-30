@@ -60,7 +60,7 @@ void Atlamillia::Player::Draw(Atlamillia::Graphics::Renderer* _rend, glm::vec2 _
 	_rend->RenderCopy(texture, &srcRect, &dstRect);
 }
 
-void Atlamillia::Player::Draw(Atlamillia::Graphics::Renderer* _rend, glm::vec2 _offset)
+void Atlamillia::Player::Draw(glm::vec2 _offset, Atlamillia::Graphics::Renderer* _rend)
 {
 	frame += 0.022f * Atlamillia::Graphics::Renderer::DT;
 	if (frame >= 15.0f)

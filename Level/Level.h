@@ -35,6 +35,8 @@ namespace Atlamillia
 
 			void Draw(glm::ivec2 offset);
 
+			Atlamillia::Engine* GetEngine() { return m_engine; };
+
 			std::vector<Atlamillia::GameObject*>* GetLevelProps()
 			{
 				return &m_props;

@@ -18,25 +18,25 @@ namespace Atlamillia
 			std::string Tag = "GameObject";
 			enum DIRECTIONS
 			{
-				NORTH,
-				NORTH_EAST, // s
-				EAST,
-				SOUTH_EAST, // d
-				SOUTH,
-				SOUTH_WEST, // w
 				WEST,
-				NORTH_WEST // a
+				NORTH_WEST, 
+				NORTH,
+				NORTH_EAST, 
+				EAST,
+				SOUTH_EAST, 
+				SOUTH,
+				SOUTH_WEST 
 			};
 
 			static std::vector<GameObject*> SceneGraph;
 		private:
 		protected:
-			DIRECTIONS m_direction;
 			Atlamillia::Graphics::Texture* m_activeTexture;
 			SDL_Rect srcRect;
 			SDL_Rect dstRect;
 		public:
 
+			DIRECTIONS m_direction;
 			Level** parent_level;
 			glm::vec2 pos;
 
@@ -52,6 +52,7 @@ namespace Atlamillia
 
 			void Draw(glm::ivec2 _offset, Atlamillia::Graphics::Renderer* _rend)
 			{
+				if (m_activeTexture == nullptr) return;
 				glm::ivec2 temp = Iso::twoDToIso(glm::ivec2(pos));
 				temp += _offset;
 				temp.y = temp.y - m_activeTexture->GetDimensions().y + 32;
@@ -114,6 +115,8 @@ namespace Atlamillia
 
 			GameObject::DIRECTIONS GameObject::GetDirectionFromDelta(glm::vec2 _deltapos)
 			{
+				//if (_deltapos.x < 0.025f && _deltapos.x > -0.025f) _deltapos.x = 0;
+				//if (_deltapos.y < 0.025f && _deltapos.y > -0.025f) _deltapos.y = 0;
 
 				if (_deltapos.x > 0 && _deltapos.y > 0) 
 				{

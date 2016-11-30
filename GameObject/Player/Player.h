@@ -17,7 +17,7 @@ namespace Atlamillia
 		public:
 			Graphics::Texture* texture;
 
-			void Draw(Atlamillia::Graphics::Renderer* _rend, glm::vec2 _offset);
+			void Draw(glm::vec2 _offset, Atlamillia::Graphics::Renderer* _rend);
 			void Draw(Atlamillia::Graphics::Renderer* _rend, glm::vec2 _viewportPos, glm::vec2 _viewportSize);
 
 			bool HandleInput(InputManager* _iman);

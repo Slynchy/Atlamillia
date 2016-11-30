@@ -8,8 +8,9 @@ namespace Atlamillia
 	class RegularZed : public NPC
 	{
 		private:
-			const float m_speed = 0.03f;
+			float m_speed;
 			const unsigned int m_wanderDistance = 10; // how far the zombie will path to
+			float frame = 0.0f;
 		protected:
 		public:
 
@@ -17,16 +18,11 @@ namespace Atlamillia
 
 			void Update();
 
-			void Draw(Atlamillia::Graphics::Renderer* rend, glm::vec2 offset);
+			void Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend);
 
 			unsigned int GetWanderDistance() { return m_wanderDistance; };
 
-			RegularZed(glm::ivec2 _startpos, Level** _parentlevel)
-			{
-				pos = _startpos;
-				parent_level = _parentlevel;
-				Tag = "RegularZombie";
-			}
+			RegularZed(glm::ivec2 _startpos, Level** _parentlevel);
 
 			~RegularZed()
 			{

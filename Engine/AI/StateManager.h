@@ -4,6 +4,14 @@
 #include <queue>
 #include "../../../ModularPathFinding/pathalgo.h"
 
+
+
+#ifdef _DEBUG
+	#define dprintf printf
+#else
+	#define dprintf __noop
+#endif
+
 namespace Atlamillia
 {
 	class AIState; 

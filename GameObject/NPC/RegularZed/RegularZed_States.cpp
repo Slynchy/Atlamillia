@@ -1,4 +1,5 @@
 #include "RegularZed_States.h"
+#include "../../../Atlamillia.h"
 #include "../../../Level/Level.h"
 #include "../../../Engine/Graphics/Graphics.h"
 
@@ -32,7 +33,7 @@ void Atlamillia::RegularZed_States::Idle::Update()
 				this->parent_manager->parent->pos.y + posY
 			),
 			(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap,
-			false
+			true
 		);
 
 		if (this->parent_manager->GetPathAlgo()->path.size() != 0)
@@ -63,7 +64,23 @@ void Atlamillia::RegularZed_States::Patrol::MoveTowards(glm::vec2 _dst)
 	{
 		temp.y -= speed;
 	}
-	this->parent_manager->parent->Translate(temp);
+	//this->parent_manager->parent->m_direction = this->parent_manager->parent->GetDirectionFromDelta(temp);
+	//this->parent_manager->parent->pos.x = Atlamillia::Engine::interpolate(this->parent_manager->parent->pos.x, _dst.x, speed * 0.33f);
+	//this->parent_manager->parent->pos.y = Atlamillia::Engine::interpolate(this->parent_manager->parent->pos.y, _dst.y, speed * 0.33f);
+
+	//temp.x -= this->parent_manager->parent->pos.x;
+	//temp.y -= this->parent_manager->parent->pos.y;
+	//this->parent_manager->parent->pos += glm::vec2(temp.x, temp.y);
+
+	this->parent_manager->parent->Translate(temp.x, temp.y);
+
+	glm::vec2 anus = _dst - this->parent_manager->parent->pos;
+	anus *= 10;
+	anus.x = std::round(anus.x);
+	anus.y = std::round(anus.y);
+	anus /= 10;
+
+	this->parent_manager->parent->m_direction = this->parent_manager->parent->GetDirectionFromDelta(anus);
 }
 
 void Atlamillia::RegularZed_States::Patrol::Update()

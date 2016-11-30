@@ -73,25 +73,25 @@ void StateManager::SwitchPathAlgorithm(ALGORITHMS _algo)
 	path_algo = nullptr;
 	switch (_algo)
 	{
-	case ALGORITHMS::ASTAR:
-		path_algo = new PathAlgorithms::AStar();
-		break;
-	case ALGORITHMS::BREADTH_FIRST:
-		path_algo = new PathAlgorithms::BreadthFirst();
-		break;
-	case ALGORITHMS::DEPTH_FIRST:
-		path_algo = new PathAlgorithms::DepthFirst();
-		break;
-	default:
-	case ALGORITHMS::BEST_FIRST:
-		path_algo = new PathAlgorithms::BestFirst();
-		break;
-	case ALGORITHMS::ASTAR_EPSILON:
-		path_algo = new PathAlgorithms::AStarEpsilon();
-		break;
-	case ALGORITHMS::DJ_KASTRAS:
-		path_algo = new PathAlgorithms::Dijkstra();
-		break;
+		case ALGORITHMS::ASTAR:
+			path_algo = new PathAlgorithms::AStar();
+			break;
+		case ALGORITHMS::BREADTH_FIRST:
+			path_algo = new PathAlgorithms::BreadthFirst();
+			break;
+		case ALGORITHMS::DEPTH_FIRST:
+			path_algo = new PathAlgorithms::DepthFirst();
+			break;
+		default:
+		case ALGORITHMS::BEST_FIRST:
+			path_algo = new PathAlgorithms::BestFirst();
+			break;
+		case ALGORITHMS::ASTAR_EPSILON:
+			path_algo = new PathAlgorithms::AStarEpsilon();
+			break;
+		case ALGORITHMS::DJ_KASTRAS:
+			path_algo = new PathAlgorithms::Dijkstra();
+			break;
 	};
 	activePathFinder = _algo;
 };
@@ -99,6 +99,20 @@ void StateManager::SwitchPathAlgorithm(ALGORITHMS _algo)
 void StateManager::DoPath(glm::ivec2 _start, glm::ivec2 _goal, std::vector<std::vector<NODE*>> _map, bool _allowDiagonal)
 {
 	if (this == nullptr) return;
+
+	try
+	{
+		if (_map.at(_goal.y).at(_goal.x)->isObstacle == true)
+		{
+			path_algo->path = std::vector<NODE>();
+			return;
+		}
+	}
+	catch ( const std::exception& e)
+	{
+		dprintf("[StateManager] %s\n", e.what());
+	}
+
 	if (path_algo != nullptr)
 		path_algo->path = path_algo->GeneratePath(_start, _goal, _map, _allowDiagonal);
 }

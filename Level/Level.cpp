@@ -1,6 +1,8 @@
 #include "Level.h"
 #include "../Atlamillia.h"
 #include "../Engine/Graphics/Graphics.h"
+#include "../GameObject/NPC/NPC.h"
+#include "../GameObject/NPC/RegularZed/RegularZed.h"
 #include <algorithm>
 
 Atlamillia::Level::Level(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Engine* _eng)
@@ -28,27 +30,39 @@ struct less_than_key
 	}
 };
 
+bool sortByDist(const Atlamillia::GameObject *lhs, const Atlamillia::GameObject *rhs) { return glm::length(lhs->pos) < glm::length(rhs->pos); }
+
 void Atlamillia::Level::Draw(glm::ivec2 _offset)
 {
 	glm::ivec2 offset = _offset - glm::ivec2(m_texture->GetDimensions().x * 0.5f, 0);
 	SDL_Rect temp = { offset.x,offset.y, m_texture->GetDimensions().x ,m_texture->GetDimensions().y };
 	this->m_renderer->RenderCopy(m_texture, NULL, &temp);
 
+	std::sort(GameObject::SceneGraph.begin(), GameObject::SceneGraph.end(), sortByDist);
+
 	bool playerdrawn = false;
 	float playerZMagnitude = glm::length(m_player->pos); // magnitude of XY == Z
-	for (size_t i = 0; i < m_props.size(); i++)
+	for (size_t i = 0; i < GameObject::SceneGraph.size(); i++)
 	{
+		//if (GameObject::SceneGraph.at(i)->Tag == "Player" || GameObject::SceneGraph.at(i)->Tag == "RegularZombie") continue;
 		// If the Z of the object is greater than the player's Z, then draw the player before the object
-		if (glm::length(m_props.at(i)->pos) > (playerZMagnitude) && playerdrawn == false)
-		{
-			m_player->Draw(m_renderer, _offset);
-			playerdrawn = true;
-		}
-		m_props.at(i)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
+		//if (glm::length(m_props.at(i)->pos) > (playerZMagnitude) && playerdrawn == false)
+		//{
+		//	m_player->Draw(m_renderer, _offset);
+		//	playerdrawn = true;
+		//}
+		GameObject* curr = GameObject::SceneGraph.at(i);
+
+		if(GameObject::SceneGraph.at(i)->Tag == "Player")
+			static_cast<Atlamillia::Player*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
+		else if(GameObject::SceneGraph.at(i)->Tag == "RegularZombie")
+			static_cast<Atlamillia::RegularZed*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
+		else
+			curr->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 	}
 	// If the player hasn't been drawn, draw them now; they are infront of all objects
-	if(playerdrawn == false)
-		m_player->Draw(m_renderer, _offset);
+//	if(playerdrawn == false)
+//		m_player->Draw(m_renderer, _offset);
 }
 
 void Atlamillia::Level::Draw()
