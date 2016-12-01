@@ -4,12 +4,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "../../../Engine/Graphics/Graphics.h"
-
-#ifdef _DEBUG
-	#define dprintf printf
-#else
-	#define dprintf __noop
-#endif
+#include "../../../Engine/Graphics/Debug.h"
 
 
 namespace Atlamillia

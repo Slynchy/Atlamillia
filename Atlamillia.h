@@ -7,6 +7,7 @@
 #include "./Engine/ResourceManager.h"
 #include "./Engine/InputManager.h"
 #include "./Level/Level.h"
+#include "./Engine/Graphics/Debug.h"
 
 namespace Atlamillia
 {
@@ -20,6 +21,7 @@ namespace Atlamillia
 			SDL_Event* m_events;
 			Atlamillia::Viewport* m_viewport;
 			Atlamillia::Level* m_activeLevel;
+			Atlamillia::Debug* m_debug;
 
 		protected:
 		public:
@@ -32,6 +34,7 @@ namespace Atlamillia
 			inline SDL_Event* GetEvent() { return m_events; };
 			inline Atlamillia::Viewport* GetViewport() { return m_viewport; };
 			inline Atlamillia::Level* GetActiveLevel() { return m_activeLevel; };
+			inline Atlamillia::Debug* GetDebug() { return m_debug; };
 			inline bool SetActiveLevel(Atlamillia::Level* _lev) 
 			{ 
 				if (_lev == nullptr) return false; 
@@ -64,6 +67,7 @@ namespace Atlamillia
 				m_events = new SDL_Event();
 				m_inputmanager = new InputManager();
 				m_viewport = new Atlamillia::Viewport(0, 0, (float)w, (float)h);
+				m_debug = new Debug(this);
 			}
 
 			~Engine()
@@ -76,6 +80,7 @@ namespace Atlamillia
 				delete m_rmanager;
 				delete m_ctx;
 				delete m_renderer;
+				delete m_debug;
 				SDL_Quit();
 			}
 	};

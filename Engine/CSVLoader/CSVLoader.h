@@ -1,12 +1,7 @@
 #pragma once
 
 #include <vector>
-
-#ifdef _DEBUG
-	#define dprintf printf
-#else
-	#define dprintf __noop
-#endif
+#include "../Graphics/Debug.h"
 
 namespace Atlamillia
 {

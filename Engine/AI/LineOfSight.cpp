@@ -2,7 +2,7 @@
 #include "../../../ModularPathFinding/node.h"
 #include <stack>
 
-bool Atlamillia::LineOfSight::HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal, std::vector<std::vector<NODE*>> _map, bool _allowDiagonal)
+bool Atlamillia::LineOfSight::HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal, std::vector<std::vector<NODE*>> _map, size_t range)
 {
 	std::vector<NODE*> open;
 	std::vector<glm::ivec2> closed;
@@ -18,7 +18,27 @@ bool Atlamillia::LineOfSight::HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal
 		open.erase(open.begin() + position);
 		closed.push_back(current->pos);
 
-		std::vector<NODE*> neighbours = GetNeighbors(current, &_map, _allowDiagonal);
+		if (current->pos == _goal)
+		{
+			for (size_t i = 0; i < index.size(); i++)
+			{
+				delete index.at(i);
+			}
+			index.clear();
+			return true;
+		}
+
+		if (current->g >= range)
+		{
+			for (size_t i = 0; i < index.size(); i++)
+			{
+				delete index.at(i);
+			}
+			index.clear();
+			return false;
+		}
+
+		std::vector<NODE*> neighbours = GetNeighbors(current, &_map, true);
 		for each (NODE* var in neighbours)
 		{
 			index.push_back(var);
@@ -29,17 +49,6 @@ bool Atlamillia::LineOfSight::HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal
 			neighbour->g = current->g + 1.0f;
 			neighbour->h = glm::distance(glm::vec2(_goal), glm::vec2(neighbour->pos));
 			neighbour->f = neighbour->g + neighbour->h;
-
-			if (neighbour->pos == _goal)
-			{
-				closed.clear();
-				for (size_t i = 0; i < index.size(); i++)
-				{
-					delete index.at(i);
-				}
-				index.clear();
-				return true;
-			}
 
 			bool existsInOpen;
 			if (PositionExistsInVector(open, neighbour) == nullptr)
@@ -63,13 +72,21 @@ bool Atlamillia::LineOfSight::HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal
 					neighbour->pos.x < 0
 					) // is above or less the size
 				{
-					closed.push_back(neighbour->pos);
-					continue;
+					for (size_t i = 0; i < index.size(); i++)
+					{
+						delete index.at(i);
+					}
+					index.clear();
+					return false;
 				}
 				else if (_map.at(neighbour->pos.y).at(neighbour->pos.x)->isObstacle == true)
 				{
-					closed.push_back(neighbour->pos);
-					continue;
+					for (size_t i = 0; i < index.size(); i++)
+					{
+						delete index.at(i);
+					}
+					index.clear();
+					return false;
 				}
 			}
 
@@ -82,5 +99,5 @@ bool Atlamillia::LineOfSight::HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal
 
 	}
 
-	return std::vector<NODE>();
+	return false;
 };

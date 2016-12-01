@@ -3,10 +3,19 @@
 #include "../../../Level/Level.h"
 #include "../../../Engine/Graphics/Graphics.h"
 #include "../../../../ModularPathFinding/BestFirst/BestFirst.h"
+#include "../../../Engine/AI/LineOfSight.h"
 
 void Atlamillia::RegularZed_States::Idle::Update()
 {
 	timer += Atlamillia::Graphics::Renderer::DT;
+
+	LineOfSight LOS;
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 15);
+	if (CanSeePlayer)
+	{
+		this->parent_manager->AddState(new Pursue(this->parent_manager, playerptr));
+		return;
+	}
 
 	if (timer >= timetowait)
 	{
@@ -59,17 +68,13 @@ void Atlamillia::RegularZed_States::Patrol::Update()
 		return;
 	};
 
-	if (glm::distance(this->parent_manager->parent->pos, playerptr->pos) < 15.0f)
+	LineOfSight LOS;
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 15);
+
+	if (CanSeePlayer)
 	{
-		PathAlgorithms::BestFirst* bstfst = new PathAlgorithms::BestFirst();
-		bstfst->GeneratePath(this->parent_manager->parent->pos, playerptr->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, true);
-		if (bstfst->path.size() < 6)
-		{
-			delete bstfst;
-			this->parent_manager->AddState(new Pursue(this->parent_manager, playerptr));
-			return;
-		}
-		delete bstfst;
+		this->parent_manager->AddState(new Pursue(this->parent_manager, playerptr));
+		return;
 	}
 
 	this->parent_manager->UpdatePathPos();
@@ -89,15 +94,15 @@ void Atlamillia::RegularZed_States::Pursue::Update()
 		return;
 	}
 
-	if (glm::distance(this->parent_manager->parent->pos, target->pos) > 5.0f)
+	LineOfSight LOS;
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, target->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 15);
+
+	if (!CanSeePlayer)
 	{
 		this->parent_manager->PopState();
 		return;
 	}
-
-	this->parent_manager->UpdatePathPos();
-
-	if (this->parent_manager->GetPathPos() == this->parent_manager->GetPath()->size() - 1)
+	else
 	{
 		this->parent_manager->DoPath(
 			glm::ivec2(this->parent_manager->parent->pos.x, this->parent_manager->parent->pos.y),
@@ -106,7 +111,14 @@ void Atlamillia::RegularZed_States::Pursue::Update()
 			true
 		);
 	}
-	else
+
+	this->parent_manager->UpdatePathPos();
+
+	if (this->parent_manager->GetPathPos() == this->parent_manager->GetPath()->size() - 1)
+	{
+		this->parent_manager->parent->MoveTowards(target->pos);
+	}
+	else if(this->parent_manager->GetPath()->size() != 0)
 	{
 		this->parent_manager->parent->MoveTowards(this->parent_manager->GetPath()->at(this->parent_manager->GetPathPos() + 1).pos);
 	}

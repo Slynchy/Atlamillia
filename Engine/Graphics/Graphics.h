@@ -39,12 +39,26 @@ namespace Atlamillia
 		{
 		private:
 			SDL_Window* CONTEXT;
+			bool visible = true;
 		public:
 			inline SDL_Window* Get() { return CONTEXT; };
 
 			Context(const char *title, int x, int y, int w, int h, Uint32 flags)
 			{
 				CONTEXT = SDL_CreateWindow(title, x, y, w, h, flags);
+				isHidden();
+			}
+
+			bool isHidden()
+			{
+				visible = ((SDL_GetWindowFlags(CONTEXT) >> SDL_WINDOW_HIDDEN) & 1);
+				return visible;
+			}
+
+			void ToggleWindow()
+			{
+				if(visible) SDL_HideWindow(CONTEXT);
+				else SDL_ShowWindow(CONTEXT);
 			}
 
 			~Context()
@@ -65,6 +79,11 @@ namespace Atlamillia
 			static Uint32 DT;
 
 			SDL_Renderer* GetRenderer() { return RENDERER; };
+
+			void SetLogicalResolution(size_t _x, size_t _y)
+			{
+				SDL_RenderSetLogicalSize(RENDERER, _x, _y);
+			}
 
 			inline void UpdateLastTime()
 			{

@@ -17,7 +17,7 @@ namespace Atlamillia
 		protected:
 		private:
 		public:
-			bool HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal, std::vector<std::vector<NODE*>> _map, bool _allowDiagonal = false);
+			bool HasLineOfSight(glm::ivec2 _start, glm::ivec2 _goal, std::vector<std::vector<NODE*>> _map, size_t range);
 	};
 
 };
