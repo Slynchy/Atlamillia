@@ -100,17 +100,26 @@ void StateManager::DoPath(glm::ivec2 _start, glm::ivec2 _goal, std::vector<std::
 {
 	if (this == nullptr) return;
 
-	try
+	if (_goal.y > 0 || _goal.y < _map.size())
 	{
-		if (_map.at(_goal.y).at(_goal.x)->isObstacle == true)
+		if (_goal.x > 0 || _goal.x < _map.at(_goal.y).size())
+		{
+			if (_map.at(_goal.y).at(_goal.x)->isObstacle == true)
+			{
+				path_algo->path = std::vector<NODE>();
+				return;
+			}
+		}
+		else
 		{
 			path_algo->path = std::vector<NODE>();
 			return;
 		}
 	}
-	catch ( const std::exception& e)
+	else
 	{
-		dprintf("[StateManager] %s\n", e.what());
+		path_algo->path = std::vector<NODE>();
+		return;
 	}
 
 	if (path_algo != nullptr)

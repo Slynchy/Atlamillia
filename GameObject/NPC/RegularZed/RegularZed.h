@@ -9,7 +9,7 @@ namespace Atlamillia
 	{
 		private:
 			float m_speed;
-			const unsigned int m_wanderDistance = 10; // how far the zombie will path to
+			const unsigned int m_wanderDistance = 5; // how far the zombie will path to
 			float frame = 0.0f;
 		protected:
 		public:

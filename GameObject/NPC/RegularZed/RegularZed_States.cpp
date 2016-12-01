@@ -64,23 +64,16 @@ void Atlamillia::RegularZed_States::Patrol::MoveTowards(glm::vec2 _dst)
 	{
 		temp.y -= speed;
 	}
-	//this->parent_manager->parent->m_direction = this->parent_manager->parent->GetDirectionFromDelta(temp);
-	//this->parent_manager->parent->pos.x = Atlamillia::Engine::interpolate(this->parent_manager->parent->pos.x, _dst.x, speed * 0.33f);
-	//this->parent_manager->parent->pos.y = Atlamillia::Engine::interpolate(this->parent_manager->parent->pos.y, _dst.y, speed * 0.33f);
-
-	//temp.x -= this->parent_manager->parent->pos.x;
-	//temp.y -= this->parent_manager->parent->pos.y;
-	//this->parent_manager->parent->pos += glm::vec2(temp.x, temp.y);
 
 	this->parent_manager->parent->Translate(temp.x, temp.y);
 
-	glm::vec2 anus = _dst - this->parent_manager->parent->pos;
-	anus *= 10;
-	anus.x = std::round(anus.x);
-	anus.y = std::round(anus.y);
-	anus /= 10;
+	glm::vec2 rounder = _dst - this->parent_manager->parent->pos;
+	rounder *= 10;
+	rounder.x = std::round(rounder.x);
+	rounder.y = std::round(rounder.y);
+	rounder /= 10;
 
-	this->parent_manager->parent->m_direction = this->parent_manager->parent->GetDirectionFromDelta(anus);
+	this->parent_manager->parent->m_direction = this->parent_manager->parent->GetDirectionFromDelta(rounder);
 }
 
 void Atlamillia::RegularZed_States::Patrol::Update()
