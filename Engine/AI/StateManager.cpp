@@ -28,21 +28,6 @@ void StateManager::AddState(AIState* _state, bool _force)
 {
 	if (_state != nullptr)
 	{
-		/*if (_force)
-		{
-			for (size_t i = 0; i < m_state_queue.size(); i++)
-			{
-				if (m_state_queue.front() == m_active_state)
-				{
-					m_state_queue.pop();
-				}
-				else
-				{
-					delete m_state_queue.front();
-					m_state_queue.pop();
-				}
-			}
-		};*/
 		m_state_queue.push(_state);
 
 		m_active_state = _state;

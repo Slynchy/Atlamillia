@@ -54,7 +54,19 @@ namespace Atlamillia
 						{
 							for (size_t zX = 0; zX < (size_t)GetZone(x, y)->GetSize().x; zX++)
 							{
-								//_level->GetZone(x, y)->GetTile(zX, zY);
+								bool prop = false;
+								for (size_t i = 0; i < m_props.size(); i++)
+								{
+									if (glm::ivec2(m_props.at(i)->pos) == glm::ivec2(zX, zY))
+									{
+										m_renderer->RenderActiveColour(0, 0, 255);
+										prop = true;
+										break;
+									}
+								}
+								if(prop == false)
+									m_renderer->RenderActiveColour(255, 0, 0);
+						
 								glm::ivec2 temp = Atlamillia::Iso::twoDToIso(glm::vec2(zX, zY) + (glm::vec2(x, y) * (float)GetZone(x, y)->GetSize().y));
 								temp += offset;
 								(m_renderer)->RenderDrawLine(temp.x, temp.y + 16, temp.x + 32, temp.y);

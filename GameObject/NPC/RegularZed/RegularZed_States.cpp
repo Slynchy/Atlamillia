@@ -59,7 +59,7 @@ void Atlamillia::RegularZed_States::Patrol::Update()
 		return;
 	};
 
-	if (glm::distance(this->parent_manager->parent->pos, playerptr->pos) < 5.0f)
+	if (glm::distance(this->parent_manager->parent->pos, playerptr->pos) < 15.0f)
 	{
 		PathAlgorithms::BestFirst* bstfst = new PathAlgorithms::BestFirst();
 		bstfst->GeneratePath(this->parent_manager->parent->pos, playerptr->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, true);
@@ -95,6 +95,19 @@ void Atlamillia::RegularZed_States::Pursue::Update()
 		return;
 	}
 
-	//this->parent_manager->UpdatePathPos();
-	this->parent_manager->parent->MoveTowards(target->pos);
+	this->parent_manager->UpdatePathPos();
+
+	if (this->parent_manager->GetPathPos() == this->parent_manager->GetPath()->size() - 1)
+	{
+		this->parent_manager->DoPath(
+			glm::ivec2(this->parent_manager->parent->pos.x, this->parent_manager->parent->pos.y),
+			target->pos,
+			(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap,
+			true
+		);
+	}
+	else
+	{
+		this->parent_manager->parent->MoveTowards(this->parent_manager->GetPath()->at(this->parent_manager->GetPathPos() + 1).pos);
+	}
 }

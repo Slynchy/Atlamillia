@@ -43,6 +43,15 @@ void RegularZed::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 	dstRect.h = int(128 * 1.5f);
 
 	rend->RenderCopy(m_activeTexture, &srcRect, &dstRect);
+
+	for (size_t i = 1; i < this->brain->GetPath()->size(); i++)
+	{
+		temp = Atlamillia::Iso::twoDToIso(this->brain->GetPath()->at(i).pos);
+		temp += offset;
+		temp2 = Atlamillia::Iso::twoDToIso(this->brain->GetPath()->at(i-1).pos);
+		temp2 += offset;
+		(rend)->RenderDrawLine(temp.x + 16, temp.y + 8, temp2.x + 16, temp2.y + 8);
+	}
 }
 
 RegularZed::RegularZed(glm::ivec2 _startpos, Level** _parentlevel)

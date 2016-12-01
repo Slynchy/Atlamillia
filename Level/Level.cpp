@@ -44,13 +44,6 @@ void Atlamillia::Level::Draw(glm::ivec2 _offset)
 	float playerZMagnitude = glm::length(m_player->pos); // magnitude of XY == Z
 	for (size_t i = 0; i < GameObject::SceneGraph.size(); i++)
 	{
-		//if (GameObject::SceneGraph.at(i)->Tag == "Player" || GameObject::SceneGraph.at(i)->Tag == "RegularZombie") continue;
-		// If the Z of the object is greater than the player's Z, then draw the player before the object
-		//if (glm::length(m_props.at(i)->pos) > (playerZMagnitude) && playerdrawn == false)
-		//{
-		//	m_player->Draw(m_renderer, _offset);
-		//	playerdrawn = true;
-		//}
 		GameObject* curr = GameObject::SceneGraph.at(i);
 
 		if(GameObject::SceneGraph.at(i)->Tag == "Player")
@@ -60,9 +53,6 @@ void Atlamillia::Level::Draw(glm::ivec2 _offset)
 		else
 			curr->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 	}
-	// If the player hasn't been drawn, draw them now; they are infront of all objects
-//	if(playerdrawn == false)
-//		m_player->Draw(m_renderer, _offset);
 }
 
 void Atlamillia::Level::Draw()

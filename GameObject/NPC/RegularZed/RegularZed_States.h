@@ -4,6 +4,7 @@
 #include "RegularZed.h"
 #include "../../../Engine/AI/AI.h"
 #include "../../../../ModularPathFinding/node.h"
+#include "../../../Level/Level.h"
 
 #ifdef _DEBUG
 	#define dprintf printf
@@ -68,6 +69,12 @@ namespace Atlamillia
 				{
 					parent_manager = _parent;
 					target = _target;
+					this->parent_manager->DoPath(
+						glm::ivec2(this->parent_manager->parent->pos.x, this->parent_manager->parent->pos.y),
+						target->pos,
+						(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap,
+						true
+					);
 				}
 		};
 	}

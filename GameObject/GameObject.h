@@ -108,8 +108,11 @@ namespace Atlamillia
 							tempPosI.y == _objects->at(i)->pos.y - 1
 							)
 						{
-							collision = true;
-							break;
+							if (_objects->at(i)->TagHash != this->TagHash)
+							{
+								collision = true;
+								break;
+							}
 						}
 					}
 				}
@@ -122,9 +125,6 @@ namespace Atlamillia
 
 			GameObject::DIRECTIONS GameObject::GetDirectionFromDelta(glm::vec2 _deltapos)
 			{
-				//if (_deltapos.x < 0.025f && _deltapos.x > -0.025f) _deltapos.x = 0;
-				//if (_deltapos.y < 0.025f && _deltapos.y > -0.025f) _deltapos.y = 0;
-
 				if (_deltapos.x > 0 && _deltapos.y > 0) 
 				{
 					return GameObject::DIRECTIONS::SOUTH;
