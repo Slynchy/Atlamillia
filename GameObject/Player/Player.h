@@ -26,7 +26,7 @@ namespace Atlamillia
 
 			Player(Level** _lev)
 			{
-				Tag = "Player";
+				ChangeTag("Player");
 				parent_level = _lev;
 			}
 

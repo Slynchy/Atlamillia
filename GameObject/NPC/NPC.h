@@ -12,11 +12,15 @@ namespace Atlamillia
 		protected:
 			Atlamillia::StateManager* brain;
 		public:
+			float m_speed;
+			float GetSpeed() { return m_speed; };
 
 			virtual Atlamillia::StateManager* GetStateManager()
 			{
 				return brain;
 			}
+
+			void MoveTowards(glm::vec2 _dst);
 
 			NPC()
 			{

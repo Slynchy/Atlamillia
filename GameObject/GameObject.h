@@ -39,6 +39,13 @@ namespace Atlamillia
 			DIRECTIONS m_direction;
 			Level** parent_level;
 			glm::vec2 pos;
+			std::size_t TagHash;
+
+			void ChangeTag(std::string _newtag)
+			{
+				Tag = _newtag;
+				TagHash = std::hash<std::string>{}(Tag);
+			}
 
 			void SetTexture(Atlamillia::Graphics::Texture* _tex)
 			{
@@ -158,6 +165,7 @@ namespace Atlamillia
 				srcRect = { 0,0,0,0 };
 				dstRect = { 0,0,0,0 };
 				SceneGraph.push_back(this);
+				TagHash = std::hash<std::string>{}(Tag);
 			}
 			~GameObject()
 			{
