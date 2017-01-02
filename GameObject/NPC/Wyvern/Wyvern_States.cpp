@@ -1,16 +1,17 @@
-#include "RegularZed_States.h"
+#include "Wyvern_States.h"
 #include "../../../Atlamillia.h"
 #include "../../../Level/Level.h"
 #include "../../../Engine/Graphics/Graphics.h"
 #include "../../../../ModularPathFinding/BestFirst/BestFirst.h"
 #include "../../../Engine/AI/LineOfSight.h"
 
-void Atlamillia::RegularZed_States::Idle::Update()
+void Atlamillia::Wyvern_States::Idle::Update()
 {
 	timer += Atlamillia::Graphics::Renderer::DT;
+	this->parent_manager->parent->velocity = glm::vec2(0,0);
 
 	LineOfSight LOS;
-	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 8);
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, std::vector<std::vector<NODE*>>(), 12);
 	if (CanSeePlayer)
 	{
 		this->parent_manager->AddState(new Pursue(this->parent_manager, playerptr));
@@ -25,15 +26,15 @@ void Atlamillia::RegularZed_States::Idle::Update()
 			(
 				(
 					rand() %
-					static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2
-				) - static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance()
+					static_cast<Wyvern*>(this->parent_manager->parent)->GetWanderDistance() * 2
+				) - static_cast<Wyvern*>(this->parent_manager->parent)->GetWanderDistance()
 			);
 		int posY = 
 			(
 				(
 					rand() %
-					static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2
-				) - static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance()
+					static_cast<Wyvern*>(this->parent_manager->parent)->GetWanderDistance() * 2
+				) - static_cast<Wyvern*>(this->parent_manager->parent)->GetWanderDistance()
 			);
 
 		this->parent_manager->DoPath(
@@ -42,7 +43,7 @@ void Atlamillia::RegularZed_States::Idle::Update()
 				this->parent_manager->parent->pos.x + posX,
 				this->parent_manager->parent->pos.y + posY
 			),
-			(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap,
+			std::vector<std::vector<NODE*>>(),
 			true
 		);
 
@@ -54,7 +55,7 @@ void Atlamillia::RegularZed_States::Idle::Update()
 	};
 };
 
-void Atlamillia::RegularZed_States::Patrol::Update()
+void Atlamillia::Wyvern_States::Patrol::Update()
 {
 	if (this->parent_manager->parent->parent_level == nullptr || *this->parent_manager->parent->parent_level == nullptr)
 	{
@@ -69,7 +70,7 @@ void Atlamillia::RegularZed_States::Patrol::Update()
 	};
 
 	LineOfSight LOS;
-	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 8);
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, std::vector<std::vector<NODE*>>(), 12);
 
 	if (CanSeePlayer)
 	{
@@ -81,7 +82,7 @@ void Atlamillia::RegularZed_States::Patrol::Update()
 	this->parent_manager->parent->MoveTowards(this->parent_manager->GetPath()->at(this->parent_manager->GetPathPos() + 1).pos);
 }
 
-void Atlamillia::RegularZed_States::Pursue::Update()
+void Atlamillia::Wyvern_States::Pursue::Update()
 {
 	if (this->parent_manager->parent->parent_level == nullptr || *this->parent_manager->parent->parent_level == nullptr)
 	{
@@ -95,7 +96,7 @@ void Atlamillia::RegularZed_States::Pursue::Update()
 	}
 
 	LineOfSight LOS;
-	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, target->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 8);
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, target->pos, std::vector<std::vector<NODE*>>(), 12);
 
 	if (!CanSeePlayer)
 	{
@@ -107,7 +108,7 @@ void Atlamillia::RegularZed_States::Pursue::Update()
 		this->parent_manager->DoPath(
 			glm::ivec2(this->parent_manager->parent->pos.x, this->parent_manager->parent->pos.y),
 			target->pos,
-			(*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap,
+			std::vector<std::vector<NODE*>>(),
 			true
 		);
 	}

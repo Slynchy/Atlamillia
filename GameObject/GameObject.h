@@ -39,7 +39,9 @@ namespace Atlamillia
 			DIRECTIONS m_direction;
 			Level** parent_level;
 			glm::vec2 pos;
+			glm::vec2 velocity;
 			std::size_t TagHash;
+			int drawOrder = 0;
 
 			void ChangeTag(std::string _newtag)
 			{

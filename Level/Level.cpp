@@ -3,6 +3,7 @@
 #include "../Engine/Graphics/Graphics.h"
 #include "../GameObject/NPC/NPC.h"
 #include "../GameObject/NPC/RegularZed/RegularZed.h"
+#include "../GameObject/NPC/Wyvern/Wyvern.h"
 #include <algorithm>
 
 Atlamillia::Level::Level(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Engine* _eng)
@@ -26,7 +27,7 @@ struct less_than_key
 {
 	inline bool operator() (const Atlamillia::GameObject* struct1, const Atlamillia::GameObject* struct2)
 	{
-		return (glm::length(struct1->pos) < glm::length(struct2->pos));
+		return (glm::length(struct1->pos) + struct1->drawOrder < glm::length(struct2->pos) + struct2->drawOrder);
 	}
 };
 
@@ -50,6 +51,8 @@ void Atlamillia::Level::Draw(glm::ivec2 _offset)
 			static_cast<Atlamillia::Player*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else if(GameObject::SceneGraph.at(i)->Tag == "RegularZombie")
 			static_cast<Atlamillia::RegularZed*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
+		else if (GameObject::SceneGraph.at(i)->Tag == "Wyvern")
+			static_cast<Atlamillia::Wyvern*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else
 			curr->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 	}

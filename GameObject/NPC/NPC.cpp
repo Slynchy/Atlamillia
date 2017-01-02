@@ -20,6 +20,8 @@ void Atlamillia::NPC::MoveTowards(glm::vec2 _dst)
 		velocity.y -= m_speed;
 	}
 
+	this->velocity = velocity;
+
 	Translate(velocity.x, velocity.y);
 
 	glm::vec2 rounder = _dst - pos;

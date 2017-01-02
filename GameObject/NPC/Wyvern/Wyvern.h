@@ -4,12 +4,13 @@
 
 namespace Atlamillia
 {
-
-	class RegularZed : public NPC
+	class Graphics::Texture;
+	class Wyvern : public NPC
 	{
 		private:
-			const unsigned int m_wanderDistance = 4; // how far the zombie will path to
+			const unsigned int m_wanderDistance = 5; // how far the zombie will path to
 			float frame = 0.0f;
+			Graphics::Texture* flyingTexture;
 		protected:
 		public:
 
@@ -19,9 +20,9 @@ namespace Atlamillia
 
 			unsigned int GetWanderDistance() { return m_wanderDistance; };
 
-			RegularZed(glm::ivec2 _startpos, Level** _parentlevel);
+			Wyvern(glm::ivec2 _startpos, Level** _parentlevel);
 
-			~RegularZed()
+			~Wyvern()
 			{
 				if (brain != nullptr)
 				{
