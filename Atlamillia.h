@@ -63,7 +63,7 @@ namespace Atlamillia
 				SDL_Init(SDL_INIT_EVERYTHING);
 				m_ctx = new Atlamillia::Graphics::Context(title, x, y, w, h, flags);
 				m_renderer = new Atlamillia::Graphics::Renderer(m_ctx);
-				m_rmanager = new Atlamillia::ResourceManager();
+				m_rmanager = new Atlamillia::ResourceManager(m_renderer);
 				m_events = new SDL_Event();
 				m_inputmanager = new InputManager();
 				m_viewport = new Atlamillia::Viewport(0, 0, (float)w, (float)h);

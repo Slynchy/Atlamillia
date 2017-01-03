@@ -4,6 +4,7 @@
 #include "../../../Engine/Graphics/Graphics.h"
 #include "../../../../ModularPathFinding/BestFirst/BestFirst.h"
 #include "../../../Engine/AI/LineOfSight.h"
+#include "../../Projectile/Projectile.h"
 
 void Atlamillia::Wyvern_States::Idle::Update()
 {
@@ -86,22 +87,22 @@ void Atlamillia::Wyvern_States::Pursue::Update()
 {
 	if (this->parent_manager->parent->parent_level == nullptr || *this->parent_manager->parent->parent_level == nullptr)
 	{
-		dprintf("[RegularZed_States] Zombie doesn't have valid level pointer for pathing!\n");
+		dprintf("[Wyvern_States] Wyvern doesn't have valid level pointer for pathing!\n");
 		return;
 	}
 	if (target == nullptr)
 	{
-		dprintf("[RegularZed_States] Zombie has no target to pursue!\n");
+		dprintf("[Wyvern_States] Wyvern has no target to pursue!\n");
 		return;
 	}
 
 	LineOfSight LOS;
 	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, target->pos, std::vector<std::vector<NODE*>>(), 12);
 
+	// Since it can see the player, the pathfinder is quick; plus the Wyvern has no obstacles
 	if (!CanSeePlayer)
 	{
-		this->parent_manager->PopState();
-		return;
+		return this->parent_manager->PopState();
 	}
 	else
 	{
@@ -115,6 +116,11 @@ void Atlamillia::Wyvern_States::Pursue::Update()
 
 	this->parent_manager->UpdatePathPos();
 
+	if ( glm::distance(this->parent_manager->parent->pos, target->pos) < 5.0f )
+	{
+		this->parent_manager->AddState(new Attack(this->parent_manager, target));
+	}
+
 	if (this->parent_manager->GetPathPos() == this->parent_manager->GetPath()->size() - 1)
 	{
 		this->parent_manager->parent->MoveTowards(target->pos);
@@ -123,4 +129,18 @@ void Atlamillia::Wyvern_States::Pursue::Update()
 	{
 		this->parent_manager->parent->MoveTowards(this->parent_manager->GetPath()->at(this->parent_manager->GetPathPos() + 1).pos);
 	}
+}
+
+void Atlamillia::Wyvern_States::Attack::Update()
+{
+
+	this->parent_manager->parent->LookAt(this->target->pos);
+	if (timer > 1000) // 1 second? Hopefully?
+	{
+		Projectile* projectile = new Projectile(this->target->pos,(*this->parent_manager->parent->parent_level)->GetEngine()->GetResourceManager());
+		projectile->pos = this->parent_manager->parent->pos;
+		return this->parent_manager->PopState();
+	}
+	else
+		timer += Atlamillia::Graphics::Renderer::DT;
 }

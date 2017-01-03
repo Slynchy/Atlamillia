@@ -31,15 +31,22 @@ Atlamillia::Graphics::Texture* Atlamillia::ResourceManager::GetTexture(std::stri
 	// if no renderer passed
 	// We don't pass renderer for assets that *should* already be loaded
 	// If this error happens, it just needs access to the renderer somehow
+
+	// ^^^^ This is all moot with Atlamillia; we can just give it the renderer pointer now!
 	if (_rend == NULL)
 	{
-		dprintf("[RManager] Could not load file (no renderer): %s\n", _name.c_str());
-		return NULL;
+		if (rend == nullptr)
+		{
+			dprintf("[RManager] Could not load file (no renderer): %s\n", _name.c_str());
+			return NULL;
+		}
+		else
+		{
+			_rend = rend;
+		}
 	}
-	else
-	{
-		temp = new Atlamillia::Graphics::Texture(_rend, _name.c_str());
-	}
+
+	temp = new Atlamillia::Graphics::Texture(_rend, _name.c_str());
 
 	// If temp == null, it's because it couldn't be loaded for whatever reason
 	if (temp->GetFilename() != "")

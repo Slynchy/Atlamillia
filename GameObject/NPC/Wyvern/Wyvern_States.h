@@ -72,5 +72,24 @@ namespace Atlamillia
 					);
 				}
 		};
+
+		class Attack : public AIState
+		{
+		private:
+			GameObject* target;
+
+			int timer;
+		protected:
+		public:
+
+			void Update();
+
+			Attack(StateManager* _parent, GameObject* _target)
+			{
+				parent_manager = _parent;
+				target = _target;
+				timer = 0;
+			}
+		};
 	}
 }

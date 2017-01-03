@@ -11,6 +11,7 @@ namespace Atlamillia
 	{
 		private:
 			std::vector<Graphics::Texture*> loaded_textures;
+			Graphics::Renderer* rend;
 
 		public:
 			Graphics::Texture* GetTexture(std::string _name, Atlamillia::Graphics::Renderer* _rend = NULL);
@@ -21,6 +22,11 @@ namespace Atlamillia
 			{
 				loaded_textures.push_back(_tex);
 			};
+
+			ResourceManager(Graphics::Renderer* _rend)
+			{
+				rend = _rend;
+			}
 			
 			~ResourceManager()
 			{

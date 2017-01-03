@@ -4,6 +4,7 @@
 #include "../GameObject/NPC/NPC.h"
 #include "../GameObject/NPC/RegularZed/RegularZed.h"
 #include "../GameObject/NPC/Wyvern/Wyvern.h"
+#include "../GameObject/Projectile/Projectile.h"
 #include <algorithm>
 
 Atlamillia::Level::Level(size_t _w, size_t _h, size_t _zW, size_t _zH, Atlamillia::Engine* _eng)
@@ -53,6 +54,8 @@ void Atlamillia::Level::Draw(glm::ivec2 _offset)
 			static_cast<Atlamillia::RegularZed*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else if (GameObject::SceneGraph.at(i)->Tag == "Wyvern")
 			static_cast<Atlamillia::Wyvern*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
+		else if (GameObject::SceneGraph.at(i)->Tag == "Projectile")
+			static_cast<Atlamillia::Projectile*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else
 			curr->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 	}
