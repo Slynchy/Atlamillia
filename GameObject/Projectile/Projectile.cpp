@@ -1,6 +1,8 @@
 #include "Projectile.h"
 #include "../../Engine/ResourceManager.h"
 #include "../../Atlamillia.h"
+#include "../FiniteAnimation.h"
+#include "../NPC/RegularZed/RegularZed.h"
 
 using namespace Atlamillia;
 
@@ -16,7 +18,7 @@ void Projectile::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 	temp2 = Atlamillia::Iso::twoDToIso(temp2);
 	temp2 += offset;
 
-	frame += (Atlamillia::Graphics::Renderer::DT * 0.004f);
+	frame += (Atlamillia::Graphics::Renderer::DT * 0.012f);
 	if (frame > 7.0f)
 		frame = 0;
 
@@ -25,8 +27,8 @@ void Projectile::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 	srcRect.w = 64;
 	srcRect.h = 64;
 
-	dstRect.x = int(temp2.x - ((64 * 1.5f) * 0.5f));
-	dstRect.y = int(temp2.y - (64 * 1.5f));
+	dstRect.x = int((temp2.x ) + this->offset.x);
+	dstRect.y = int((temp2.y - (32 * 1.5f)) + this->offset.y);
 	dstRect.w = int(64 * 1.5f);
 	dstRect.h = int(64 * 1.5f);
 
@@ -35,18 +37,39 @@ void Projectile::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 
 void Projectile::Update()
 {
-	this->pos = Atlamillia::Engine::interpolate(this->pos, target, 0.001f);
+	this->pos = Atlamillia::Engine::interpolate(this->pos, target, 0.004f);
+	offset = Atlamillia::Engine::interpolate(offset, glm::vec2(0,0), 0.004f);
 
-	if (glm::distance(this->pos, glm::vec2(target)) < 0.25f)
+	if (glm::distance(this->pos, glm::vec2(target)) < 1.0f)
 	{
+		FiniteAnimation* temp = new FiniteAnimation(
+			this->pos,
+			rsrc->GetTexture("./gfx/explosion.png"),
+			glm::ivec2(96, 96), 
+			19);
+
+		size_t zombieHash = std::hash<std::string>{}("RegularZombie");
+		for each (GameObject* var in GameObject::SceneGraph)
+		{
+			if (var->TagHash == zombieHash)
+			{
+				if (glm::distance(var->pos, this->pos) < 3.0f)
+				{
+					static_cast<Atlamillia::RegularZed*>(var)->Kill();
+				}
+			}
+		}
+
 		return delete this;
 	}
 }
 
-Projectile::Projectile(glm::ivec2 _target, ResourceManager* rsrc)
+Projectile::Projectile(glm::ivec2 _target, ResourceManager* _rsrc, glm::vec2 _offset)
 {
 	ChangeTag("Projectile");
 	target = _target;
-	m_activeTexture = rsrc->GetTexture("./gfx/fireball/fireball_0.png");
-	m_direction = GetDirectionFromDelta( glm::vec2(_target) - this->pos );
+	rsrc = _rsrc;
+	m_activeTexture = _rsrc->GetTexture("./gfx/fireball/fireball_0.png");
+	this->LookAt(_target);
+	offset = _offset;
 }
