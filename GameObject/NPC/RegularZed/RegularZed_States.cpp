@@ -5,6 +5,11 @@
 #include "../../../../ModularPathFinding/BestFirst/BestFirst.h"
 #include "../../../Engine/AI/LineOfSight.h"
 
+void Atlamillia::RegularZed_States::Dead::Update()
+{
+
+}
+
 void Atlamillia::RegularZed_States::Idle::Update()
 {
 	timer += Atlamillia::Graphics::Renderer::DT;

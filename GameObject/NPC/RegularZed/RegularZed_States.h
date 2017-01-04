@@ -6,6 +6,8 @@
 #include "../../../../ModularPathFinding/node.h"
 #include "../../../Level/Level.h"
 #include "../../../Engine/Graphics/Debug.h"
+#include "../../../Atlamillia.h"
+#include "../../../Engine/ResourceManager.h"
 
 namespace Atlamillia
 {
@@ -35,6 +37,18 @@ namespace Atlamillia
 						}
 					}
 				}
+		};
+
+		class Dead : public AIState
+		{
+		private:
+		public:
+			void Update();
+
+			Dead(StateManager* _parent)
+			{
+				_parent->parent->SetTexture( (*_parent->parent->parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/zombie_dead.png") );
+			}
 		};
 
 		class Patrol : public AIState

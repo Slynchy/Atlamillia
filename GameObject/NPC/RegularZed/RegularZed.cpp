@@ -6,6 +6,7 @@
 #include "../../../../ModularPathFinding/node.h"
 #include "../../../Level/Level.h"
 #include "../../../Atlamillia.h"
+#include "RegularZed_States.h"
 
 using namespace Atlamillia;
 
@@ -52,6 +53,14 @@ void RegularZed::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 		temp2 += offset;
 		(rend)->RenderDrawLine(temp.x + 16, temp.y + 8, temp2.x + 16, temp2.y + 8);
 	}
+}
+
+void Atlamillia::RegularZed::Kill()
+{
+	while (this->brain->GetActiveState() != nullptr)
+		this->brain->PopState();
+
+	this->brain->AddState( new RegularZed_States::Dead(this->brain), true);
 }
 
 RegularZed::RegularZed(glm::ivec2 _startpos, Level** _parentlevel)
