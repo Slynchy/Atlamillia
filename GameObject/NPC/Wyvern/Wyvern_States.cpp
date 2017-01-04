@@ -116,7 +116,7 @@ void Atlamillia::Wyvern_States::Pursue::Update()
 
 	this->parent_manager->UpdatePathPos();
 
-	if ( glm::distance(this->parent_manager->parent->pos, target->pos) < 5.0f )
+	if ( glm::distance(this->parent_manager->parent->pos, target->pos) < 10.0f )
 	{
 		this->parent_manager->AddState(new Attack(this->parent_manager, target));
 	}
@@ -134,10 +134,12 @@ void Atlamillia::Wyvern_States::Pursue::Update()
 void Atlamillia::Wyvern_States::Attack::Update()
 {
 
-	this->parent_manager->parent->LookAt(this->target->pos);
-	if (timer > 1000) // 1 second? Hopefully?
+	//this->parent_manager->parent->LookAt(this->target->pos);
+	//this->parent_manager->parent->SetTexture((*this->parent_manager->parent->parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/wyvern.png"));
+	this->parent_manager->parent->velocity = glm::vec2(0, 0);
+	if (timer > 1000) // 1 second? Maybe?
 	{
-		Projectile* projectile = new Projectile(this->target->pos,(*this->parent_manager->parent->parent_level)->GetEngine()->GetResourceManager());
+		Projectile* projectile = new Projectile(this->target->pos,(*this->parent_manager->parent->parent_level)->GetEngine()->GetResourceManager(), glm::vec2(0,-192));
 		projectile->pos = this->parent_manager->parent->pos;
 		return this->parent_manager->PopState();
 	}

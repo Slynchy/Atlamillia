@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "../Atlamillia.h"
+#include "../GameObject/FiniteAnimation.h"
 #include "../Engine/Graphics/Graphics.h"
 #include "../GameObject/NPC/NPC.h"
 #include "../GameObject/NPC/RegularZed/RegularZed.h"
@@ -56,6 +57,8 @@ void Atlamillia::Level::Draw(glm::ivec2 _offset)
 			static_cast<Atlamillia::Wyvern*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else if (GameObject::SceneGraph.at(i)->Tag == "Projectile")
 			static_cast<Atlamillia::Projectile*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
+		else if (GameObject::SceneGraph.at(i)->Tag == "FiniteAnim")
+			static_cast<Atlamillia::FiniteAnimation*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else
 			curr->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 	}
