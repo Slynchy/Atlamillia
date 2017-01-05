@@ -15,6 +15,7 @@ namespace Atlamillia
 			glm::vec2 movement = glm::vec2(0, 0);
 		protected:
 		public:
+			bool isAttacking = false;
 			Graphics::Texture* texture;
 
 			void Draw(glm::vec2 _offset, Atlamillia::Graphics::Renderer* _rend);
