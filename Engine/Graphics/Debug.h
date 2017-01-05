@@ -19,6 +19,7 @@ namespace Atlamillia
 			Atlamillia::Graphics::Context* ctx;
 			Atlamillia::Graphics::Renderer* rend;
 			bool isEnabled = false;
+			bool m_speedUp = false;
 		protected:
 		public:
 
@@ -34,6 +35,17 @@ namespace Atlamillia
 				m_engine = nullptr;
 				if (ctx != nullptr) delete ctx;
 				if (rend != nullptr) delete rend;
+			}
+
+			bool SpeedUp(bool _speedup)
+			{
+				m_speedUp = _speedup;
+				return m_speedUp;
+			}
+
+			bool SpeedUp()
+			{
+				return m_speedUp;
 			}
 
 			/// Toggle the debug mode/window

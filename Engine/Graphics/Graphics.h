@@ -107,7 +107,8 @@ namespace Atlamillia
 
 			inline void RenderCopy(Texture * texture, const SDL_Rect* srcrect, const SDL_Rect* dstrect)
 			{
-				SDL_RenderCopy(RENDERER, texture->GetTexture(), srcrect, dstrect);
+				if(texture != nullptr)
+					SDL_RenderCopy(RENDERER, texture->GetTexture(), srcrect, dstrect);
 			}
 
 			inline void RenderDrawLine(float _x1, float _y1, float _x2, float _y2)

@@ -41,8 +41,8 @@ void Atlamillia::Debug::Draw()
 	for each (GameObject* var in GameObject::SceneGraph)
 	{
 		SDL_Rect temp = {
-			0 + (squareSize * int(var->pos.x)),
-			0 + (squareSize * int(var->pos.y)),
+			0 + (squareSize * int(std::roundf(var->pos.x))),
+			0 + (squareSize * int(std::roundf(var->pos.y))),
 			squareSize,
 			squareSize
 		};
