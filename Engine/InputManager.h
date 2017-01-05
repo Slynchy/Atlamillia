@@ -13,6 +13,7 @@ namespace Atlamillia
 				DOWN,
 				LEFT,
 				RIGHT,
+				SPACE,
 				NUM_OF_BUTTONS
 			};
 		private:
@@ -49,6 +50,15 @@ namespace Atlamillia
 				if (m_queueUpdate == false) return;
 				else m_queueUpdate = false;
 				SDL_KEYBOARDSTATE = SDL_GetKeyboardState(NULL);
+
+				if (SDL_KEYBOARDSTATE[SDL_SCANCODE_SPACE])
+				{
+					keys[SPACE] = true;
+				}
+				else
+				{
+					keys[SPACE] = false;
+				}
 
 				if (SDL_KEYBOARDSTATE[SDL_SCANCODE_W])
 				{

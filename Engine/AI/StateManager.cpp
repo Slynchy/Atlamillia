@@ -85,6 +85,15 @@ void StateManager::DoPath(glm::ivec2 _start, glm::ivec2 _goal, std::vector<std::
 {
 	if (this == nullptr) return;
 
+	if (_goal.y < 0)
+	{
+		if (_goal.x < 0)
+		{
+			path_algo->path = std::vector<NODE>();
+			return;
+		}
+	}
+
 	if (_map.size() != 0)
 	{
 		if (_goal.y > 0 && _goal.y < (int)_map.size())

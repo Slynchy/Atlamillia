@@ -5,6 +5,7 @@
 #include "../GameObject/NPC/NPC.h"
 #include "../GameObject/NPC/RegularZed/RegularZed.h"
 #include "../GameObject/NPC/Wyvern/Wyvern.h"
+#include "../GameObject/NPC/SkeletonWarrior/SkeletonWarrior.h"
 #include "../GameObject/Projectile/Projectile.h"
 #include <algorithm>
 
@@ -59,6 +60,8 @@ void Atlamillia::Level::Draw(glm::ivec2 _offset)
 			static_cast<Atlamillia::Projectile*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else if (GameObject::SceneGraph.at(i)->Tag == "FiniteAnim")
 			static_cast<Atlamillia::FiniteAnimation*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
+		else if (GameObject::SceneGraph.at(i)->Tag == "SkeletonWarrior")
+			static_cast<Atlamillia::SkeletonWarrior*>(curr)->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 		else
 			curr->Draw(offset + glm::ivec2(m_texture->GetDimensions().x*0.5, 0), m_renderer);
 	}
@@ -170,7 +173,7 @@ Atlamillia::Level* Atlamillia::Level::CreateLevel(const char* _inputfile, Atlami
 							if (propmap_int.at(zY).at(zX) != 0)
 							{
 								GameObject* temp = new GameObject();
-								temp->SetTexture(output->m_engine->GetResourceManager()->GetTexture(propmap_index.front().at(propmap_int.at(zY).at(zX)-1), output->m_engine->GetRenderer()));
+								temp->SetTexture(output->m_engine->GetResourceManager()->GetTexture(propmap_index.at(propmap_int.at(zY).at(zX)-1).front(), output->m_engine->GetRenderer()));
 								temp->pos = (glm::vec2(zX, zY));
 								output->m_props.push_back(temp);
 							};
