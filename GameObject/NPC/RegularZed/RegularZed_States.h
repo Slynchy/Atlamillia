@@ -26,7 +26,8 @@ namespace Atlamillia
 				{
 					parent_manager = _parent;
 					timetowait = (rand() % 2000) + 1000; // 1 to 3 seconds
-					
+					playerptr = nullptr;
+
 					std::size_t playerHash = std::hash<std::string>{}("Player");
 					for (size_t i = 0; i < GameObject::SceneGraph.size(); i++)
 					{

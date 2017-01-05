@@ -5,9 +5,28 @@
 #include "../../../../ModularPathFinding/BestFirst/BestFirst.h"
 #include "../../../Engine/AI/LineOfSight.h"
 
+bool CheckPathDuplicates(std::vector<NODE>* _path)
+{
+	for (size_t i = 0; i < _path->size(); i++)
+	{
+		for (size_t h = 0; h < _path->size(); h++)
+		{
+			if (i == h) continue;
+			if (_path->at(i).pos.x == _path->at(h).pos.x)
+			{
+				if (_path->at(i).pos.y == _path->at(h).pos.y)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 void Atlamillia::RegularZed_States::Dead::Update()
 {
-
+	return;
 }
 
 void Atlamillia::RegularZed_States::Idle::Update()
@@ -30,14 +49,14 @@ void Atlamillia::RegularZed_States::Idle::Update()
 			(
 				(
 					rand() %
-					static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2
+					(static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2)
 				) - static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance()
 			);
 		int posY = 
 			(
 				(
 					rand() %
-					static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2
+					(static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance() * 2)
 				) - static_cast<RegularZed*>(this->parent_manager->parent)->GetWanderDistance()
 			);
 
@@ -51,7 +70,7 @@ void Atlamillia::RegularZed_States::Idle::Update()
 			true
 		);
 
-		if (this->parent_manager->GetPathAlgo()->path.size() != 0)
+		if (this->parent_manager->GetPath()->size() != 0 && CheckPathDuplicates(this->parent_manager->GetPath()) == false)
 		{
 			this->parent_manager->AddState(new Patrol(this->parent_manager, playerptr));
 		}

@@ -8,7 +8,7 @@ namespace Atlamillia
 	class RegularZed : public NPC
 	{
 		private:
-			const unsigned int m_wanderDistance = 4; // how far the zombie will path to
+			const unsigned int m_wanderDistance = 12; // how far the zombie will path to
 			float frame = 0.0f;
 		protected:
 		public:

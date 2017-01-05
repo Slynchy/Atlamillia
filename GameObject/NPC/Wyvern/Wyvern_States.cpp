@@ -12,7 +12,7 @@ void Atlamillia::Wyvern_States::Idle::Update()
 	this->parent_manager->parent->velocity = glm::vec2(0,0);
 
 	LineOfSight LOS;
-	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, std::vector<std::vector<NODE*>>(), 12);
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, std::vector<std::vector<NODE*>>(), 9);
 	if (CanSeePlayer)
 	{
 		this->parent_manager->AddState(new Pursue(this->parent_manager, playerptr));
@@ -71,7 +71,7 @@ void Atlamillia::Wyvern_States::Patrol::Update()
 	};
 
 	LineOfSight LOS;
-	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, std::vector<std::vector<NODE*>>(), 12);
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, std::vector<std::vector<NODE*>>(), 9);
 
 	if (CanSeePlayer)
 	{
@@ -97,7 +97,7 @@ void Atlamillia::Wyvern_States::Pursue::Update()
 	}
 
 	LineOfSight LOS;
-	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, target->pos, std::vector<std::vector<NODE*>>(), 12);
+	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, target->pos, std::vector<std::vector<NODE*>>(), 9);
 
 	// Since it can see the player, the pathfinder is quick; plus the Wyvern has no obstacles
 	if (!CanSeePlayer)
@@ -136,6 +136,7 @@ void Atlamillia::Wyvern_States::Attack::Update()
 
 	//this->parent_manager->parent->LookAt(this->target->pos);
 	//this->parent_manager->parent->SetTexture((*this->parent_manager->parent->parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/wyvern.png"));
+
 	this->parent_manager->parent->velocity = glm::vec2(0, 0);
 	if (timer > 1000) // 1 second? Maybe?
 	{
