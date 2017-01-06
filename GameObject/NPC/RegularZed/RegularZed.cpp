@@ -60,6 +60,7 @@ void Atlamillia::RegularZed::Kill()
 	while (this->brain->GetActiveState() != nullptr)
 		this->brain->PopState();
 
+	m_isAlive = false;
 	this->brain->AddState( new RegularZed_States::Dead(this->brain), true);
 }
 

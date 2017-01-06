@@ -8,7 +8,6 @@ namespace Atlamillia
 	class SkeletonWarrior : public NPC
 	{
 	private:
-		float frame = 0.0f;
 	protected:
 	public:
 

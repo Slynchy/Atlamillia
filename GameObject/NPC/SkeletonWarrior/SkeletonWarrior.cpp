@@ -26,15 +26,22 @@ SkeletonWarrior::SkeletonWarrior(glm::ivec2 _startpos, Level** _parentlevel)
 void SkeletonWarrior::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 {
 	bool walking = false;
-	if (velocity.x != 0 && velocity.y != 0)
+	if (IsAttacking() == true)
 	{
-		m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0_walk.png");
-		walking = true;
+		m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0_attack.png");
 	}
 	else
 	{
-		m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0.png");
-	}
+		if (velocity.x != 0 && velocity.y != 0)
+		{
+			m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0_walk.png");
+			walking = true;
+		}
+		else
+		{
+			m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0.png");
+		}
+	};
 
 	glm::vec2 temp = this->pos;
 	temp.x = std::round(temp.x);
@@ -46,19 +53,33 @@ void SkeletonWarrior::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* ren
 	temp2 = Atlamillia::Iso::twoDToIso(temp2);
 	temp2 += offset;
 
-	frame += (Atlamillia::Graphics::Renderer::DT * 0.001f) * 4.0f;
-	if (walking)
+	//frame += (Atlamillia::Graphics::Renderer::DT * 0.001f) * 4.0f;
+	SetFrame(GetFrame() + ((Atlamillia::Graphics::Renderer::DT * 0.001f) * 4.0f));
+	if (IsAttacking() == true)
 	{
-		if (frame > 8.0f)
-			frame = 0;
+		if (GetFrame() > 4.0f)
+		{
+			SetFrame(0);
+			IsAttacking(false);
+		}
 	}
 	else
 	{
-		if (frame > 4.0f)
-			frame = 0;
+		if (walking)
+		{
+			if (GetFrame() > 8.0f)
+				SetFrame(0);
+		}
+		else
+		{
+			if (GetFrame() > 4.0f)
+			{
+				SetFrame(0);
+			}
+		}
 	}
 
-	srcRect.x = int(0 + (128 * std::floor(frame)));
+	srcRect.x = int(0 + (128 * std::floor(GetFrame())));
 	srcRect.y = int(0 + (128 * m_direction));
 	srcRect.w = 128;
 	srcRect.h = 128;

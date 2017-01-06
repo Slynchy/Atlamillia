@@ -13,29 +13,7 @@ void Atlamillia::Player::Update(InputManager* _iman)
 
 	if (isAttacking)
 	{
-		size_t sceneGraphPos = 0;
-		for(size_t i = 0; i < GameObject::SceneGraph.size(); i++)
-		{
-			// Is object further down (Z) than player?
-			if (glm::length(GameObject::SceneGraph.at(i)->pos) > glm::length(pos))
-			{
-				sceneGraphPos = i;
-				break;
-			}
-		}
-
-		std::vector<GameObject*> closeObjects;
-		try
-		{
-			for (size_t i = 0; i < 10; i++)
-			{
-				closeObjects.push_back(GameObject::SceneGraph.at(sceneGraphPos + (5 - i)));
-			}
-		}
-		catch (std::exception& e)
-		{
-			// this is fine.
-		}
+		std::vector<GameObject*> closeObjects = GameObject::GetCloseObjects(this->pos, 25, "RegularZombie");
 
 		for each (GameObject* var in closeObjects)
 		{
