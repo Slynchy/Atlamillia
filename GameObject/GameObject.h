@@ -43,6 +43,8 @@ namespace Atlamillia
 			std::size_t TagHash;
 			int drawOrder = 0;
 
+			static std::vector<GameObject*> GetCloseObjects(glm::vec2 _pos, int _range = 10, std::string _tag = "");
+
 			void ChangeTag(std::string _newtag);
 
 			void SetTexture(Atlamillia::Graphics::Texture* _tex);

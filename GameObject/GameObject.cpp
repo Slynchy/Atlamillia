@@ -1,8 +1,39 @@
 #include "GameObject.h"
+#include "../Engine/Graphics/Debug.h"
 
 using namespace Atlamillia;
 
 std::vector<GameObject*> GameObject::SceneGraph;
+
+std::vector<GameObject*> Atlamillia::GameObject::GetCloseObjects(glm::vec2 _pos, int _range, std::string _tag)
+{
+	size_t sceneGraphPos = 0;
+	for (size_t i = 0; i < GameObject::SceneGraph.size(); i++)
+	{
+		// Is object further down (Z) than player?
+		//if (glm::length(GameObject::SceneGraph.at(i)->pos) > glm::length(_pos))
+		if(_pos == GameObject::SceneGraph.at(i)->pos)
+		{
+			sceneGraphPos = i;
+			break;
+		}
+	}
+
+	std::vector<GameObject*> closeObjects;
+	int half = (_range / 2);
+	for (size_t i = 0; i < _range; i++)
+	{
+		if (GameObject::SceneGraph.size() <= (sceneGraphPos + (half - i))) continue;
+		if (_tag != "" && _tag == GameObject::SceneGraph.at(sceneGraphPos + (half - i))->Tag)
+			closeObjects.push_back(GameObject::SceneGraph.at(sceneGraphPos + (half - i)));
+		else
+		{
+			_range++;
+			half = (_range / 2);
+		}
+	}
+	return closeObjects;
+}
 
 void GameObject::ChangeTag(std::string _newtag)
 {
