@@ -113,7 +113,7 @@ namespace Atlamillia
 
 			inline void RenderDrawLine(float _x1, float _y1, float _x2, float _y2)
 			{
-				SDL_RenderDrawLine(RENDERER, (int)_x1, (int)_y1, (int)_x2, (int)_y2);
+				SDL_RenderDrawLine(RENDERER, (int)std::round(_x1), (int)std::round(_y1), (int)std::round(_x2), (int)std::round(_y2));
 			}
 
 			inline void RenderDrawLine(int _x1, int _y1, int _x2, int _y2)
