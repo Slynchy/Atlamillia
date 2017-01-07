@@ -33,6 +33,7 @@ namespace Atlamillia
 				}
 				catch (std::exception& e)
 				{
+					e; // just so the compiler will stfu
 					dprintf("[Tile] Failed to get object at index %d! %s\n", _pos, e.what());
 					return nullptr;
 				}
