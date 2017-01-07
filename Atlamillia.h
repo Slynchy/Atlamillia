@@ -1,3 +1,10 @@
+/// \file		Atlamillia.h
+/// \author		Sam Lynch
+/// \brief		Header file for Atlamillia engine
+/// \version	0.5.1
+/// \date		January 2017
+/// \details	The header file for declaring the engine and its functions/variables.
+
 #pragma once
 
 #include "./GameObject/GameObject.h"
@@ -11,16 +18,33 @@
 
 namespace Atlamillia
 {
+
+	/// Master class of the Atlamillia engine
 	class Engine
 	{
 		private:
+			/// The window/context for primary rendering
 			Atlamillia::Graphics::Context* m_ctx;
+
+			/// The primary renderer
 			Atlamillia::Graphics::Renderer* m_renderer;
+
+			/// The main resource manager; for loading/getting textures
 			Atlamillia::ResourceManager* m_rmanager;
+
+			/// The input manager, for mouse/keyboard input
 			Atlamillia::InputManager* m_inputmanager;
+
+			/// SDL events buffer
 			SDL_Event* m_events;
+
+			/// The viewport into the 2D world
 			Atlamillia::Viewport* m_viewport;
+
+			/// The current level
 			Atlamillia::Level* m_activeLevel;
+
+			/// The debug window and other debug-related information
 			Atlamillia::Debug* m_debug;
 
 		protected:
@@ -30,28 +54,28 @@ namespace Atlamillia
 			inline Atlamillia::Graphics::Renderer* GetRenderer() { return m_renderer; };
 			inline Atlamillia::Graphics::Context* GetContext() { return m_ctx; };
 			inline Atlamillia::InputManager* GetInputManager() { return m_inputmanager; };
-			inline int PollEvents() { return SDL_PollEvent(m_events); };
 			inline SDL_Event* GetEvent() { return m_events; };
 			inline Atlamillia::Viewport* GetViewport() { return m_viewport; };
 			inline Atlamillia::Level* GetActiveLevel() { return m_activeLevel; };
 			inline Atlamillia::Debug* GetDebug() { return m_debug; };
+			inline Atlamillia::Level** GetActiveLevelPtr() { return &m_activeLevel; };
+
+			inline int PollEvents() { return SDL_PollEvent(m_events); };
 			inline bool SetActiveLevel(Atlamillia::Level* _lev) 
 			{ 
 				if (_lev == nullptr) return false; 
 				m_activeLevel = _lev; 
 				return true;
 			};
-			inline Atlamillia::Level** GetActiveLevelPtr()
-			{
-				return &m_activeLevel;
-			}
 
+			/// Lerp function for glm Vec2
 			static glm::vec2 interpolate(const glm::vec2 &start, const glm::vec2 &end, float alpha)
 			{
 				alpha *= Atlamillia::Graphics::Renderer::DT;
 				return (start + alpha*(end - start));
 			}
 
+			/// Lerp function for FP values
 			static float interpolate(const float &start, const float &end, float alpha)
 			{
 				alpha *= Atlamillia::Graphics::Renderer::DT;

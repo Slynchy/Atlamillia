@@ -1,3 +1,7 @@
+/// \file 		Viewport.h
+/// \author 	Sam Lynch
+/// \brief 		Header file for viewport object
+
 #pragma once
 
 #include <glm/glm.hpp>

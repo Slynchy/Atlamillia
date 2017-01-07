@@ -34,8 +34,10 @@ void Atlamillia::NPC::MoveTowards(glm::vec2 _dst)
 
 void Atlamillia::NPC::Kill()
 {
+	// Pop all states
 	while (this->brain->GetActiveState() != nullptr)
 		this->brain->PopState();
 
+	// Set alive status to not alive
 	m_isAlive = false;
 }

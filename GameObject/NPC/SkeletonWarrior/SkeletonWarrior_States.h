@@ -15,6 +15,8 @@ namespace Atlamillia
 {
 	namespace SkeletonWarrior_States
 	{
+
+		/// Idle state; finds random location away from current position, then patrols to it
 		class Idle : public AIState
 		{
 			private:
@@ -26,6 +28,7 @@ namespace Atlamillia
 				void Update();
 		};
 
+		/// Patrol state; follows path and looks for zombies to attack
 		class Patrol : public AIState
 		{
 			private:
@@ -38,6 +41,7 @@ namespace Atlamillia
 				}
 		};
 
+		/// Dead state; does nothing
 		class Dead : public AIState
 		{
 		private:
@@ -49,6 +53,7 @@ namespace Atlamillia
 			}
 		};
 
+		/// Hunt state; chases then kills target
 		class Hunt : public AIState
 		{
 		private:
@@ -63,6 +68,7 @@ namespace Atlamillia
 			}
 		};
 
+		/// Attack state; kills target
 		class Attack : public AIState
 		{
 			private:

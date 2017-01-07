@@ -5,11 +5,18 @@
 namespace Atlamillia
 {
 	class Graphics::Texture;
+
+	/// Wyvern NPC class
 	class Wyvern : public NPC
 	{
 		private:
-			const unsigned int m_wanderDistance = 5; // how far the zombie will path to
+			/// How far away the wyvern can path to
+			const unsigned int m_wanderDistance = 5;
+
+			/// Current animation frame
 			float frame = 0.0f;
+
+			/// Texture of wyvern in flight
 			Graphics::Texture* flyingTexture;
 		protected:
 		public:

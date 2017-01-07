@@ -13,11 +13,19 @@ namespace Atlamillia
 {
 	namespace RegularZed_States
 	{
+		
+		/// Idle state; waits a bit then pathfinds randomly via Patrol state
 		class Idle : public AIState
 		{
 			private:
+				/// Current timer until moving
 				Uint32 timer = 0;
+
+				/// Time limit until moving
 				Uint32 timetowait = 0;
+
+				/// Pointer to the player
+				/// Not necessary anymore, really..
 				GameObject* playerptr;
 			public:
 				void Update();
@@ -40,6 +48,7 @@ namespace Atlamillia
 				}
 		};
 
+		/// Dead state; does absolutely nothing
 		class Dead : public AIState
 		{
 		private:
@@ -52,10 +61,13 @@ namespace Atlamillia
 			}
 		};
 
+		/// Patrol state; follows its path, checking for enemies along the way
 		class Patrol : public AIState
 		{
 			private:
 				GameObject* playerptr;
+
+				/// Array of pointers to all skeletons in level
 				std::vector<GameObject*> skeletons;
 			public:
 				void Update();
@@ -76,9 +88,11 @@ namespace Atlamillia
 				}
 		};
 
+		/// Pursue state; pathfinds towards target and deals damage if within range
 		class Pursue : public AIState
 		{
 			private:
+				/// Pointer to target to pursue
 				GameObject* target = nullptr;
 			protected:
 			public:

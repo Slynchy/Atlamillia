@@ -1,3 +1,7 @@
+/// \file 		InputManager.h
+/// \author 	Sam Lynch
+/// \brief 		Header file for input management
+
 #pragma once
 
 #include <SDL2/SDL.h>

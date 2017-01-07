@@ -1,3 +1,7 @@
+/// \file 		ResourceManager.h
+/// \author 	Sam Lynch
+/// \brief 		Header file for resource manager
+
 #pragma once
 
 #include <string>
@@ -7,6 +11,7 @@
 
 namespace Atlamillia
 {
+	/// Class for resource management
 	class ResourceManager
 	{
 		private:
@@ -14,10 +19,14 @@ namespace Atlamillia
 			Graphics::Renderer* rend;
 
 		public:
+			/// Gets the specified texture and loads it if it isn't already loaded.
+			/// Does not require the renderer to be passed in as a parameter.
 			Graphics::Texture* GetTexture(std::string _name, Atlamillia::Graphics::Renderer* _rend = NULL);
 
+			/// Deletes the specified texture from the loaded textures
 			void DeleteTexture(Graphics::Texture* _tex);
 
+			/// Adds the specified texture to the loaded texture array
 			void AddTexture(Graphics::Texture* _tex)
 			{
 				loaded_textures.push_back(_tex);
