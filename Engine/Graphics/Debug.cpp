@@ -38,6 +38,8 @@ void Atlamillia::Debug::Draw()
 
 	size_t player = std::hash<std::string>{}("Player");
 	size_t zomb = std::hash<std::string>{}("RegularZombie");
+	size_t skele = std::hash<std::string>{}("SkeletonWarrior");
+	size_t wyv = std::hash<std::string>{}("Wyvern");
 	for each (GameObject* var in GameObject::SceneGraph)
 	{
 		SDL_Rect temp = {
@@ -53,6 +55,14 @@ void Atlamillia::Debug::Draw()
 		else if (var->TagHash == zomb)
 		{
 			rend->RenderActiveColour(255, 0, 0, 255);
+		}
+		else if (var->TagHash == skele)
+		{
+			rend->RenderActiveColour(102, 255, 255, 255);
+		}
+		else if (var->TagHash == wyv)
+		{
+			rend->RenderActiveColour(255, 0, 127, 255);
 		}
 		else
 		{

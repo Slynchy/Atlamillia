@@ -54,6 +54,23 @@ namespace Atlamillia
 				ctx->ToggleWindow();
 				isEnabled = true;
 			}
+
+			/// Toggle the debug mode/window
+			void SetEnabled(bool _enabled)
+			{
+				if (_enabled == true)
+				{
+					if(!ctx->isHidden())
+						ctx->ToggleWindow();
+				}
+				else
+				{
+					if (ctx->isHidden())
+						ctx->ToggleWindow();
+				}
+				isEnabled = _enabled;
+			}
+
 			/// Is it enabled?
 			bool enabled()
 			{
