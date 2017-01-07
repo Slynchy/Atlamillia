@@ -1,4 +1,5 @@
 #include "SkeletonWarrior.h"
+#include "SkeletonWarrior_States.h"
 #include "../../../Engine/AI/AI.h"
 #include "../../../Engine/AI/StateManager.h"
 #include "../../../Engine/Graphics/Graphics.h"
@@ -10,6 +11,7 @@ using namespace Atlamillia;
 
 void SkeletonWarrior::Update()
 {
+	if (m_health <= 0 && m_isAlive == true) Kill();
 	if (this->brain != nullptr) this->brain->Update();
 	return;
 }
@@ -26,22 +28,29 @@ SkeletonWarrior::SkeletonWarrior(glm::ivec2 _startpos, Level** _parentlevel)
 void SkeletonWarrior::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 {
 	bool walking = false;
-	if (IsAttacking() == true)
+	if (isAlive() == false)
 	{
-		m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0_attack.png");
+		m_activeTexture = ((*this->parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/zombie_dead.png"));
 	}
 	else
 	{
-		if (velocity.x != 0 && velocity.y != 0)
+		if (IsAttacking() == true)
 		{
-			m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0_walk.png");
-			walking = true;
+			m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0_attack.png");
 		}
 		else
 		{
-			m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0.png");
-		}
-	};
+			if (velocity.x != 0 && velocity.y != 0)
+			{
+				m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0_walk.png");
+				walking = true;
+			}
+			else
+			{
+				m_activeTexture = (*parent_level)->GetEngine()->GetResourceManager()->GetTexture("./gfx/skeleton_0.png");
+			}
+		};
+	}
 
 	glm::vec2 temp = this->pos;
 	temp.x = std::round(temp.x);
@@ -91,6 +100,7 @@ void SkeletonWarrior::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* ren
 
 	rend->RenderCopy(m_activeTexture, &srcRect, &dstRect);
 
+	if ((*parent_level)->GetEngine()->GetDebug()->enabled() == false) return;
 	for (size_t i = 1; i < this->brain->GetPath()->size(); i++)
 	{
 		temp = Atlamillia::Iso::twoDToIso(this->brain->GetPath()->at(i).pos);
@@ -99,4 +109,14 @@ void SkeletonWarrior::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* ren
 		temp2 += offset;
 		(rend)->RenderDrawLine(temp.x + 16, temp.y + 8, temp2.x + 16, temp2.y + 8);
 	}
+}
+
+void Atlamillia::SkeletonWarrior::Kill()
+{
+	while (this->brain->GetActiveState() != nullptr)
+		this->brain->PopState();
+
+	m_health = 0;
+	m_isAlive = false;
+	this->brain->AddState(new SkeletonWarrior_States::Dead(this->brain), true);
 }

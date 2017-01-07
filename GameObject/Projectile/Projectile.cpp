@@ -3,6 +3,7 @@
 #include "../../Atlamillia.h"
 #include "../FiniteAnimation.h"
 #include "../NPC/RegularZed/RegularZed.h"
+#include "../NPC/SkeletonWarrior/SkeletonWarrior.h"
 
 using namespace Atlamillia;
 
@@ -49,13 +50,18 @@ void Projectile::Update()
 			19);
 
 		size_t zombieHash = std::hash<std::string>{}("RegularZombie");
+		size_t skeleHash = std::hash<std::string>{}("SkeletonWarrior");
 		for each (GameObject* var in GameObject::SceneGraph)
 		{
-			if (var->TagHash == zombieHash)
+			if (glm::distance(var->pos, this->pos) < 3.0f)
 			{
-				if (glm::distance(var->pos, this->pos) < 3.0f)
+				if (var->TagHash == zombieHash)
 				{
 					static_cast<Atlamillia::RegularZed*>(var)->Kill();
+				}
+				else if (var->TagHash == skeleHash)
+				{
+					static_cast<Atlamillia::SkeletonWarrior*>(var)->Kill();
 				}
 			}
 		}

@@ -52,6 +52,7 @@ void Wyvern::Draw(glm::vec2 offset, Atlamillia::Graphics::Renderer* rend)
 
 	rend->RenderCopy(m_activeTexture, &srcRect, &dstRect);
 
+	if ((*parent_level)->GetEngine()->GetDebug()->enabled() == false) return;
 	for (size_t i = 1; i < this->brain->GetPath()->size(); i++)
 	{
 		temp = Atlamillia::Iso::twoDToIso(this->brain->GetPath()->at(i).pos);

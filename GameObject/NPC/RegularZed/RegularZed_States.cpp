@@ -4,7 +4,11 @@
 #include "../../../Engine/Graphics/Graphics.h"
 #include "../../../../ModularPathFinding/BestFirst/BestFirst.h"
 #include "../../../Engine/AI/LineOfSight.h"
+#include "../SkeletonWarrior/SkeletonWarrior.h"
 
+/// This function checks for duplicate positions in the path, in case it breaks
+/// \param _path Pointer to vector of NODE objects
+/// \return True if duplicate exists, false if not
 bool CheckPathDuplicates(std::vector<NODE>* _path)
 {
 	for (size_t i = 0; i < _path->size(); i++)
@@ -26,6 +30,7 @@ bool CheckPathDuplicates(std::vector<NODE>* _path)
 
 void Atlamillia::RegularZed_States::Dead::Update()
 {
+	// He's dead, Jim.
 	return;
 }
 
@@ -92,6 +97,21 @@ void Atlamillia::RegularZed_States::Patrol::Update()
 		return;
 	};
 
+	for each (GameObject* var in skeletons)
+	{
+		if (static_cast<NPC*>(var)->isAlive() == false)
+		{
+			continue;
+		};
+		if (glm::distance(var->pos, this->parent_manager->parent->pos) < 8)
+		{
+			LineOfSight LOS;
+			bool CanSeeTarget = LOS.HasLineOfSight(this->parent_manager->parent->pos, var->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 8);
+			if(CanSeeTarget == true)
+				return this->parent_manager->AddState(new Pursue(this->parent_manager, var));
+		}
+	}
+
 	LineOfSight LOS;
 	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 8);
 
@@ -118,6 +138,14 @@ void Atlamillia::RegularZed_States::Pursue::Update()
 		return;
 	}
 
+	if (target->Tag != "Player")
+	{
+		if (static_cast<NPC*>(target)->isAlive() == false)
+		{
+			return this->parent_manager->PopState();
+		};
+	}
+
 	LineOfSight LOS;
 	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, target->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 8);
 
@@ -141,6 +169,10 @@ void Atlamillia::RegularZed_States::Pursue::Update()
 	if (this->parent_manager->GetPathPos() == this->parent_manager->GetPath()->size() - 1)
 	{
 		this->parent_manager->parent->MoveTowards(target->pos);
+		if (target->Tag == "SkeletonWarrior")
+		{
+			static_cast<SkeletonWarrior*>(target)->TakeDamage(10);
+		}
 	}
 	else if(this->parent_manager->GetPath()->size() != 0)
 	{

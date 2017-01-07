@@ -70,6 +70,18 @@ void Atlamillia::Wyvern_States::Patrol::Update()
 		return;
 	};
 
+	for each (GameObject* var in skeletons)
+	{
+		if (static_cast<NPC*>(var)->isAlive() == false) continue;
+		if (glm::distance(var->pos, this->parent_manager->parent->pos) < 8)
+		{
+			LineOfSight LOS;
+			bool CanSeeTarget = LOS.HasLineOfSight(this->parent_manager->parent->pos, var->pos, (*this->parent_manager->parent->parent_level)->GetZone(0, 0)->m_nodemap, 8);
+			if (CanSeeTarget == true)
+				return this->parent_manager->AddState(new Pursue(this->parent_manager, var));
+		}
+	}
+
 	LineOfSight LOS;
 	bool CanSeePlayer = LOS.HasLineOfSight(this->parent_manager->parent->pos, playerptr->pos, std::vector<std::vector<NODE*>>(), 9);
 
@@ -94,6 +106,12 @@ void Atlamillia::Wyvern_States::Pursue::Update()
 	{
 		dprintf("[Wyvern_States] Wyvern has no target to pursue!\n");
 		return;
+	}
+
+	if (target->Tag != "Player")
+	{
+		if(static_cast<NPC*>(target)->isAlive() == false)
+			return this->parent_manager->PopState();
 	}
 
 	LineOfSight LOS;

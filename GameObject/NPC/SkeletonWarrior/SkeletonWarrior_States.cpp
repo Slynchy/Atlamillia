@@ -119,3 +119,8 @@ void SkeletonWarrior_States::Attack::Update()
 		return this->parent_manager->PopState();
 	}
 }
+
+void SkeletonWarrior_States::Dead::Update()
+{
+	printf("");
+}

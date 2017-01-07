@@ -13,6 +13,7 @@ namespace Atlamillia
 		protected:
 			Atlamillia::StateManager* brain;
 			bool m_isAttacking = false;
+			bool m_isAlive = true;
 		public:
 			float m_speed;
 			float GetSpeed() { return m_speed; };
@@ -25,6 +26,13 @@ namespace Atlamillia
 			{
 				return m_isAttacking;
 			}
+
+			bool isAlive()
+			{
+				return m_isAlive;
+			}
+
+			virtual void Kill();
 
 			float GetFrame() { return frame; };
 			void SetFrame(float _frm) { frame = _frm; };

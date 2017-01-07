@@ -31,3 +31,11 @@ void Atlamillia::NPC::MoveTowards(glm::vec2 _dst)
 	rounder *= 0.10f;
 	m_direction = GetDirectionFromDelta(rounder);
 }
+
+void Atlamillia::NPC::Kill()
+{
+	while (this->brain->GetActiveState() != nullptr)
+		this->brain->PopState();
+
+	m_isAlive = false;
+}

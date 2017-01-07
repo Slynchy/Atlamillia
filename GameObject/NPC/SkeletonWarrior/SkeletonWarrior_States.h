@@ -38,6 +38,17 @@ namespace Atlamillia
 				}
 		};
 
+		class Dead : public AIState
+		{
+		private:
+		public:
+			void Update();
+
+			Dead(StateManager* _parent)
+			{
+			}
+		};
+
 		class Hunt : public AIState
 		{
 		private:

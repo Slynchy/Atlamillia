@@ -56,6 +56,7 @@ namespace Atlamillia
 		{
 			private:
 				GameObject* playerptr;
+				std::vector<GameObject*> skeletons;
 			public:
 				void Update();
 
@@ -63,6 +64,15 @@ namespace Atlamillia
 				{
 					parent_manager = _parent;
 					playerptr = _player;
+					size_t skeletonHash = std::hash<std::string>{}("SkeletonWarrior");
+					for each (GameObject* var in GameObject::SceneGraph)
+					{
+						if (var->TagHash == skeletonHash)
+						{
+							skeletons.push_back(var);
+						}
+						else continue;
+					}
 				}
 		};
 
