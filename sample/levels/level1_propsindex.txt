@@ -1,0 +1,5 @@
+./gfx/props/cactus.png
+./gfx/props/rock.png
+./gfx/props/rock2.png
+./gfx/props/rock3.png
+./gfx/props/tombwoof.png
